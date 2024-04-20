@@ -92,3 +92,20 @@ a {
  margin-right: 20px;
 
 }
+
+
+/* Footer Stylings */
+footer{
+    background: black;
+    display:block;
+    color: white;
+    padding: 9px 20px;
+}
+.center{
+    text-align: center;
+}
+.links{
+    display: flex;
+    margin: 1%;
+    justify-content: center;
+}
