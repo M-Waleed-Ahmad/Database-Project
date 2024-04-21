@@ -58,7 +58,67 @@
         </ul>
     </section>
      <section class="container" id="div-section">
-        <div id="div1" class="div1"></div>
+        <div id="div1" class="div1">
+            <div class="profile">
+                <div class="sect-1">
+                    <img src="../images/profile-default.svg" alt="">
+                </div>
+                <div class="sect-2">
+       
+                </div>
+                <div class="sect-3">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Patient</th>
+                                <!-- Add more columns as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Contact</td>
+                                <td>Phone No</td>
+                                <!-- Add more rows and data as needed -->
+                            </tr>
+                            <tr>
+                                <td>Gender</td>
+                                <td>Male</td>
+                            </tr>
+                            <tr>
+                                <td>Age</td>
+                                <td>Something Something</td>
+                            </tr> 
+                            <tr>
+                                <td>Weight</td>
+                                <td>Heavy</td>
+                            </tr>
+                            <tr>
+                                <td>Address</td>
+                                <td>Town,Block,Street</td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>Active</td>
+                            </tr>
+                            <hr>
+                            <!-- Add more rows as needed -->
+                        </tbody>
+                    </table>
+    
+                </div>
+                <div class="sect-4">
+                    <nav class="prof-nav">
+                        <ul>
+                            <li><a class="item1" id="link1" href="#" onclick="toggleLine1(this)">Curent EHR</a></li>
+                            <li><a class="item1" id="link2" href="#" onclick="toggleLine1(this)">Past EHR</a></li>
+                        </ul>
+                        <div class="line1"></div>
+                    </nav>
+                    
+                </div>
+            </div>
+        </div>
         <div id="div2" class="div2"></div>
         <div id="div3" class="div3"></div>
         <div id="div4" class="div4"></div>
@@ -73,7 +133,7 @@
             sidebar.style.left = sidebar.style.left === '0px' ? '-250px' : '0px';
         });
  
-         function toggleSection(aid)
+        function toggleSection(aid)
         {
             const a=aid.id;
             const s=a[4];
@@ -125,22 +185,38 @@
             }
 
         };
- function toggleLine(element) {
-    const line = document.querySelector('.line');
-    const navItems = document.querySelectorAll('.item');
+        function toggleLine(element) {
+            const line = document.querySelector('.line');
+            const navItems = document.querySelectorAll('.item');
 
-    const itemWidth = element.offsetWidth;
-    const itemOffsetLeft = element.offsetLeft;
-    const containerOffsetLeft = document.querySelector('.innernav2').offsetLeft; 
-    line.style.width = itemWidth + 'px';
-    line.style.transform = 'translateX(' + (itemOffsetLeft - containerOffsetLeft) + 'px)'; 
-    
-     navItems.forEach(item => {
-        item.classList.remove('active');
-    });
+            const itemWidth = element.offsetWidth;
+            const itemOffsetLeft = element.offsetLeft;
+            const containerOffsetLeft = document.querySelector('.innernav2').offsetLeft; 
+            line.style.width = itemWidth + 'px';
+            line.style.transform = 'translateX(' + (itemOffsetLeft - containerOffsetLeft) + 'px)'; 
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
 
-     element.classList.add('active');
-}
+            element.classList.add('active');
+        }
+        function toggleLine1(element) {
+            const line = document.querySelector('.line1');
+            const navItems = document.querySelectorAll('.item1');
+
+            const itemWidth = element.offsetWidth;
+            const itemOffsetLeft = element.offsetLeft;
+            const containerOffsetLeft = document.querySelector('.prof-nav').offsetLeft; 
+            line.style.width = itemWidth + 'px';
+            line.style.transform = 'translateX(' + (itemOffsetLeft - containerOffsetLeft) + 'px)'; 
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+
+            element.classList.add('active');
+        }
 
     </script>
 </body>

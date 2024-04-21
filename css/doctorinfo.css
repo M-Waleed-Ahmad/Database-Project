@@ -92,63 +92,9 @@ a {
  margin-right: 20px;
 
 }
-.confirmation {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #ffffff;
-    width: 300px;
-    padding: 20px;
-    border-radius: 10px;
-    z-index: 1;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-}
 
-.h {
-    text-align: center;
-    color: #333;
-    margin-top: 10px;
-}
-
-.confirmation div {
-    display: flex;
-    justify-content: center;
-}
-
-.confirmation button {
-    margin: 10px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.confirmation button:hover {
-    background-color: #0056b3;
+.input_len_Qual_and_lang{
+    margin-right: 30px
 }
 
 
-/* Footer Stylings */
-footer{
-    background: black;
-    display:block;
-    color: white;
-    padding: 9px 20px;
-}
-.center{
-    text-align: center;
-}
-.links{
-    display: flex;
-    margin: 1%;
-    justify-content: center;
-}
-
-.container.show {
-    opacity: 0.4; /* Apply opacity only to the container */
-}
