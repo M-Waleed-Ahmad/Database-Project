@@ -43,7 +43,7 @@
                 <li><a class="item" id="link1" href="#" onclick="toggleSection(document.getElementById('link1'));toggleLine(this)">Profile</a></li>
                 <li><a class="item" id="link2" href="#"  onclick="toggleSection(document.getElementById('link2'));toggleLine(this)">Appointments</a></li>
                 <li><a class="item" id="link3" href="#"  onclick="toggleSection(document.getElementById('link3'));toggleLine(this)">Medications</a></li>
-                <li><a class="item" id="link4" href="#"  onclick="toggleSection(document.getElementById('link4'));toggleLine(this)">EHR Management</a></li>
+                <li><a class="item" id="link4" href="#"  onclick="toggleSection(document.getElementById('link4'));toggleLine(this)">Consultationss</a></li>
                 <li><a class="item" id="link5" href="#"  onclick="toggleSection(document.getElementById('link5'));toggleLine(this)">Support Community</a></li>
             </ul>
             <div class="line"></div>
@@ -59,74 +59,82 @@
     </section>
      <section class="container" id="div-section">
         <div id="div1" class="div1">
-            <div class="profile">
+            <div  class="profile">
+                <!-- Profile Image -->
                 <div class="sect-1">
-                    <img src="../images/profile-default.svg" alt="">
+                <div style="display: flex;justify-content: center;">
+                    <img src="../images/profile-default.svg" alt="Profile Picture">
                 </div>
-                <div class="sect-2">
-       
+           <!-- Basic and Emergency Information -->
+                <div class="info">
+                    <p><strong>Name:</strong> Patient</p>
+                    <p><strong>Blood Type:</strong> O+</p>
+                    <p><strong>Allergies:</strong> Penicillin</p>
+                    <p><strong>Medical Conditions:</strong> Diabetes, Hypertension</p>
+                    <p><strong>Emergency Contact:</strong> Jane Doe (Spouse)</p>
                 </div>
-                <div class="sect-3">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Patient</th>
-                                <!-- Add more columns as needed -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Contact</td>
-                                <td>Phone No</td>
-                                <!-- Add more rows and data as needed -->
-                            </tr>
-                            <tr>
-                                <td>Gender</td>
-                                <td>Male</td>
-                            </tr>
-                            <tr>
-                                <td>Age</td>
-                                <td>Something Something</td>
-                            </tr> 
-                            <tr>
-                                <td>Weight</td>
-                                <td>Heavy</td>
-                            </tr>
-                            <tr>
-                                <td>Address</td>
-                                <td>Town,Block,Street</td>
-                            </tr>
-                            <tr>
-                                <td>Status</td>
-                                <td>Active</td>
-                            </tr>
-                            <hr>
-                            <!-- Add more rows as needed -->
-                        </tbody>
-                    </table>
-    
                 </div>
-                <div class="sect-4">
-                    <nav class="prof-nav">
-                        <ul>
-                            <li><a class="item1" id="link1" href="#" onclick="toggleLine1(this)">Curent EHR</a></li>
-                            <li><a class="item1" id="link2" href="#" onclick="toggleLine1(this)">Past EHR</a></li>
-                        </ul>
-                        <div class="line1"></div>
-                    </nav>
-                    
-                </div>
+         
+                      <!-- Current and Past Health Records (On the Right Side) -->
+            <div class="sect-2" >
+                <nav class="prof-nav">
+                    <ul>
+                        <li><a class="item1" id="link1" href="#" onclick="toggleLine1(this)">Current EHR</a></li>
+                        <li><a class="item1" id="link2" href="#" onclick="toggleLine1(this)">Past EHR</a></li>
+                    </ul>
+                    <div class="line1"></div>
+                </nav>
+            </div>
+      
             </div>
         </div>
-        <div id="div2" class="div2"></div>
+        <div id="div2" class="div2">
+            <button class="btn">Create Appointments</button>
+      
+            <div class="appoint">
+                <section class="Appointments-1">
+                    <div class="doc" id="doc-1" onclick="displayData('doc-1')">
+                        <p><strong>Name:</strong> Patient1</p>
+                        <p><strong>Case:</strong> B+</p>
+                        <p><strong>Date:</strong> Penicillin</p>
+                    </div>
+                    <div class="doc" id="doc-2" onclick="displayData('doc-2')">
+                        <p><strong>Name:</strong> Patient2</p>
+                        <p><strong>Case:</strong> C+</p>
+                        <p><strong>Date:</strong> ASTHMA</p>
+            
+                    </div>
+                    <div class="doc" id="doc-3"onclick=" displayData('doc-3')">
+                        <p><strong>Name:</strong> Patient3</p>
+                        <p><strong>Case:</strong> A+</p>
+                        <p><strong>Date:</strong> ECZEMA</p>
+    
+                    </div>
+                    <div class="doc" id="doc-4" onclick="displayData('doc-4')">
+                        <p><strong>Name:</strong> Patient4</p>
+                        <p><strong>Case:</strong> D+</p>
+                        <p><strong>Date:</strong> ICE CREAM</p>
+    
+                    </div>
+                    <div class="doc" id="doc-5" onclick="displayData('doc-5')">
+                        <p><strong>Doctor:</strong> Patient</p>
+                        <p><strong>Case:</strong> O+</p>
+                        <p><strong>Date:</strong> Penicillin</p>
+    
+                    </div>
+                </section>
+                <section class="appointments-2">
+                
+            </div>
+            </section>   
+        </div>
         <div id="div3" class="div3"></div>
         <div id="div4" class="div4"></div>
         <div id="div5" class="div5"></div>
      </section>
+  
     <script>
-        
-        const sidebar = document.getElementById('sidebar');
+         const sidebar = document.getElementById('sidebar');
         const hamburger = document.getElementById('hamburger');
 
         hamburger.addEventListener('click', () => {
@@ -217,6 +225,49 @@
 
             element.classList.add('active');
         }
+        const appointmentsSection = document.querySelector('.appointments-2');
+        console.log(appointmentsSection);
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const appointmentsRect = appointmentsSection.getBoundingClientRect();
+            const originalTop = 20; // Original top position of appointments-2 section
+
+            if (scrollTop > originalTop) {
+                // Scrolling down
+                appointmentsSection.style.position = 'fixed';
+                appointmentsSection.style.top = '10%'; // Adjust as needed
+            } else {
+                // Scrolling up or at the top
+                appointmentsSection.style.position = 'sticky';
+            }
+        });
+
+        function displayData(docId) {
+        const docElement = document.getElementById(docId);
+
+        const name = docElement.querySelector('p:nth-child(1)').innerText;
+        const caseInfo = docElement.querySelector('p:nth-child(2)').innerText;
+        const date = docElement.querySelector('p:nth-child(3)').innerText;
+ 
+        // Display the data in the appointments-2 section
+        const appointments2Section = document.querySelector('.appointments-2');
+        appointments2Section.innerHTML = `
+        <h2>Appointment Details</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Case:</strong> ${caseInfo}</p>
+        <p><strong>Date:</strong> ${date}</p>
+        <p><strong>Doctor:</strong> Shaka</p>
+        <p><strong>Location:</strong> Shaka</p>
+        <p><strong>Time:</strong> Shaka</p>
+        <div style="margin-left:40px;">
+            <button class="btn1" ">Cancel</button>
+            <button class="btn1" ">Confirm</button>
+            <button class="btn1" ">Text</button>
+            <button class="btn1" ">Set Reminder</button>        
+        </div>`;
+
+    }
+
 
     </script>
 </body>

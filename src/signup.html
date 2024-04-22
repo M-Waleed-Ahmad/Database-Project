@@ -12,7 +12,7 @@
         <h2 class="h">Who do you want to signup as?</h2>
         <div>
             <button id="patient"><h2>Patient</h2></button>
-            <button><h2>Doctor</h2></button>
+            <button id="doctor"><h2>Doctor</h2></button>
     </div>
     </div>
     <div class="container">
@@ -112,6 +112,9 @@
         }); 
         document.getElementById('patient').addEventListener('click', function() {
             window.location.href = './patientinfo.html';
+        });  
+        document.getElementById('doctor').addEventListener('click', function() {
+            window.location.href = './doctorinfo.html';
         });
     </script>
 </body>
