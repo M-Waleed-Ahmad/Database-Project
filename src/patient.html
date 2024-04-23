@@ -42,8 +42,8 @@
             <ul>
                 <li><a class="item" id="link1" href="#" onclick="toggleSection(document.getElementById('link1'));toggleLine(this)">Profile</a></li>
                 <li><a class="item" id="link2" href="#"  onclick="toggleSection(document.getElementById('link2'));toggleLine(this)">Appointments</a></li>
-                <li><a class="item" id="link3" href="#"  onclick="toggleSection(document.getElementById('link3'));toggleLine(this)">Medications</a></li>
-                <li><a class="item" id="link4" href="#"  onclick="toggleSection(document.getElementById('link4'));toggleLine(this)">Consultationss</a></li>
+                <li><a class="item" id="link3" href="#"  onclick="toggleSection(document.getElementById('link3'));toggleLine(this)">Consultations</a></li>
+                <li><a class="item" id="link4" href="#"  onclick="toggleSection(document.getElementById('link4'));toggleLine(this)">Prescriptions</a></li>
                 <li><a class="item" id="link5" href="#"  onclick="toggleSection(document.getElementById('link5'));toggleLine(this)">Support Community</a></li>
             </ul>
             <div class="line"></div>
@@ -53,11 +53,12 @@
     <section id="sidebar" class="sidebar">
         <ul>
             <li><a href="#">Link 1</a></li>
-            <li><a href="#">Link 2</a></li>
-            <li><a href="#">Link 3</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Settings </a></li>
         </ul>
     </section>
      <section class="container" id="div-section">
+        <!-- Profile -->
         <div id="div1" class="div1">
             <div  class="profile">
                 <!-- Profile Image -->
@@ -88,51 +89,148 @@
       
             </div>
         </div>
+     
+        <!-- Appointments -->
         <div id="div2" class="div2">
             <button class="btn">Create Appointments</button>
       
             <div class="appoint">
-                <section class="Appointments-1">
-                    <div class="doc" id="doc-1" onclick="displayData('doc-1')">
-                        <p><strong>Name:</strong> Patient1</p>
-                        <p><strong>Case:</strong> B+</p>
-                        <p><strong>Date:</strong> Penicillin</p>
-                    </div>
-                    <div class="doc" id="doc-2" onclick="displayData('doc-2')">
-                        <p><strong>Name:</strong> Patient2</p>
-                        <p><strong>Case:</strong> C+</p>
-                        <p><strong>Date:</strong> ASTHMA</p>
-            
-                    </div>
-                    <div class="doc" id="doc-3"onclick=" displayData('doc-3')">
-                        <p><strong>Name:</strong> Patient3</p>
-                        <p><strong>Case:</strong> A+</p>
-                        <p><strong>Date:</strong> ECZEMA</p>
-    
-                    </div>
-                    <div class="doc" id="doc-4" onclick="displayData('doc-4')">
-                        <p><strong>Name:</strong> Patient4</p>
-                        <p><strong>Case:</strong> D+</p>
-                        <p><strong>Date:</strong> ICE CREAM</p>
-    
-                    </div>
-                    <div class="doc" id="doc-5" onclick="displayData('doc-5')">
-                        <p><strong>Doctor:</strong> Patient</p>
-                        <p><strong>Case:</strong> O+</p>
-                        <p><strong>Date:</strong> Penicillin</p>
-    
+                    <section class="Appointments-1">
+                        <div class="doc" id="doc-1" onclick="displayData('doc-1')">
+                            <p><strong>Name:</strong> Patient1</p>
+                            <p><strong>Case:</strong> B+</p>
+                            <p><strong>Date:</strong> Penicillin</p>
+                        </div>
+                        <div class="doc" id="doc-2" onclick="displayData('doc-2')">
+                            <p><strong>Name:</strong> Patient2</p>
+                            <p><strong>Case:</strong> C+</p>
+                            <p><strong>Date:</strong> ASTHMA</p>
+                
+                        </div>
+                        <div class="doc" id="doc-3"onclick=" displayData('doc-3')">
+                            <p><strong>Name:</strong> Patient3</p>
+                            <p><strong>Case:</strong> A+</p>
+                            <p><strong>Date:</strong> ECZEMA</p>
+        
+                        </div>
+                        <div class="doc" id="doc-4" onclick="displayData('doc-4')">
+                            <p><strong>Name:</strong> Patient4</p>
+                            <p><strong>Case:</strong> D+</p>
+                            <p><strong>Date:</strong> ICE CREAM</p>
+        
+                        </div>
+                        <div class="doc" id="doc-5" onclick="displayData('doc-5')">
+                            <p><strong>Doctor:</strong> Patient</p>
+                            <p><strong>Case:</strong> O+</p>
+                            <p><strong>Date:</strong> Penicillin</p>
+        
+                        </div>
+                    </section>
+                    <section class="appointments-2">
+                    
+            </div>
+        </div>
+ 
+        </div>
+        <!-- Consultations -->
+        <div id="div3" class="div3">
+            <header>
+                <h1>Consultations</h1>
+            </header>
+            <main>
+                <section id="chats" class="section">
+                    <h2>Your Chats</h2>
+                    <div class="chat-list">
+                        <!-- Chat previews will be dynamically added here -->
                     </div>
                 </section>
-                <section class="appointments-2">
-                
-            </div>
-            </section>   
+                <section id="conversation" class="section">
+                    <h2>Conversation</h2>
+                    <div class="conversation">
+                        <!-- Conversation messages will be dynamically added here -->
+                    </div>
+                </section>
+            </main>
+            
         </div>
-        <div id="div3" class="div3"></div>
-        <div id="div4" class="div4"></div>
-        <div id="div5" class="div5"></div>
+        <!-- Prescriptions -->
+        <div id="div4" class="div4">
+            <header>
+                <h1>Prescriptions</h1>
+            </header>
+            <main>
+                <section class="prescription-list">
+                    <h2>Your Prescriptions</h2>
+                    <ul>
+                        <!-- Prescriptions will be dynamically added here -->
+                    </ul>
+                </section>
+                <section class="prescription-details">
+                    <h2>Prescription Details</h2>
+                    <form id="prescription-form">
+                        <label for="doctor">Doctor:</label>
+                        <input type="text" id="doctor" name="doctor" required>
+                        <label for="medication">Medication:</label>
+                        <input type="text" id="medication" name="medication" required>
+                        <label for="dosage">Dosage:</label>
+                        <input type="text" id="dosage" name="dosage" required>
+                        <label for="frequency">Frequency:</label>
+                        <input type="text" id="frequency" name="frequency" required>
+                        <label for="remaining">Remaining Quantity:</label>
+                        <input type="number" id="remaining" name="remaining" required>
+                        <label for="next-refill">Next Refill Date:</label>
+                        <input type="date" id="next-refill" name="next-refill" required>
+                        <button type="submit">Add Prescription</button>
+                    </form>
+                </section>
+            </main>
+
+        </div>
+        <!-- Support Community -->
+        <div id="div5" class="div5">
+            <header>
+                <h1>Support Community</h1>
+            </header>
+            
+            <main id="supportf">
+                <section class="ask-question">
+                    <h2>Ask a Question</h2>
+                    <form action="#">
+                        <textarea name="question" id="question" placeholder="Type your question here..." required></textarea>
+                        <button type="submit">Submit</button>
+                    </form>
+                </section>
+            
+                <section class="recent-questions">
+                    <h2>Recent Questions</h2>
+                    <ul>
+                        <li>
+                            <h3>Question Title</h3>
+                            <p>Posted by: User123</p>
+                            <p>Date: January 1, 2024</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac nulla sed quam vehicula...</p>
+                            <a href="#">View Details</a>
+                        </li>
+                    </ul>
+                </section>
+            </main>
+            
+        </div>
      </section>
-  
+     <footer>
+        <div class="center">
+            Copyright &copy; www.webforgersnexus.com. All rights reserved!
+        </div>
+        <div class="links">
+            <img src="../images/fb.png" alt="facebook"   height="20px" width="20px" style="padding: 0% 2%;">
+            <img src="../images/fb.png" alt="Instagram"  height="20px" width="20px"  style="padding: 0% 2%;">
+            <img src="../images/fb.png" alt="Twitter" height="20px" width="20px"  style="padding: 0% 2%;">
+            <img src="../images/fb.png" alt="Youtube" height="20px" width="20px"  style="padding: 0% 2%;">
+            <img src="../images/fb.png" alt="linkedin" height="20px" width="20px" style="padding: 0% 2%;">
+            <img src="../images/fb.png" alt="whatsapp" height="20px" width="20px" style="padding: 0% 2%;">
+        </div>
+   </footer>
+
     <script>
          const sidebar = document.getElementById('sidebar');
         const hamburger = document.getElementById('hamburger');
