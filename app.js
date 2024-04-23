@@ -1,5 +1,7 @@
 const express = require('express');
-const app = express();
+const path=require('path')
+ const app = express();
+
 const port = 80;
 
 
@@ -8,8 +10,12 @@ app.use('/styles', express.static(__dirname + '/styles'));
 app.use('/images', express.static(__dirname + '/images'));
 
 
-// Handling Requests
+// Pug stuff
+app.set('view engine','pug');
+app.set('views',path.join(__dirname,'src'));
 
+// Endpoints
+app.get()
 
 
 // Start the server
