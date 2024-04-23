@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="../css/signup.css">
+    <link rel="shortcut icon" href="../images/logo.jfif" type="image/x-icon">
+</head>
+<body id="bd">
+    <div class="confirmation">
+        <h2 class="h">Who do you want to signup as?</h2>
+        <div>
+            <button id="patient"><h2>Patient</h2></button>
+            <button id="doctor"><h2>Doctor</h2></button>
+    </div>
+    </div>
+    <div class="container">
+        <h1>Sign Up</h1>
+
+        <br><br>
+        <form action="" method="post">
+            <div class="form-group">
+                <div class="name-group">
+                    <div class="half">
+                        <label for="firstname">First Name:</label>
+                        <input type="text" id="firstname" name="firstname" required>
+                    </div>
+                    <div class="half">
+                        <label for="lastname">Last Name:</label>
+                        <input type="text" id="lastname" name="lastname" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                    <div class = input_len_e> 
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                   
+            </div>
+
+            <div class="form-group">
+                <div class="input_len_e">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+            </div>
+            <div class="form-group">
+                <div class="input_len_e">
+                    <label for="confirm_password">Confirm Password:</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required>
+                </div>
+                
+            </div>
+
+            <div class="form-group">
+                <div class="name-group">
+                   <div class =half>
+                     <label for="gender">Gender:</label>
+                     <select id="gender" name="gender" required>
+                     <option value="male">Male</option>
+                     <option value="female">Female</option>
+                     <option value="other">Other</option>
+                     <option value="rather_not_to_say"> Rather not to say</option>
+                     </select>
+                  </div>
+                  <div class="half">
+                     <label for="dob">Date of Birth:</label>
+                     <input type="date" id="dob" name="dob" required>
+                  </div>
+
+                </div>
+            </div>
+            <br>
+            <button id="submit" type="submit">Next</button>
+        </form>
+        <p>Already have an account? <a href="login.html">Log in</a></p>
+    </div>
+
+    <footer>
+        <div class="center">
+            Copyright &copy; www.webforgersnexus.com. All rights reserved!
+        </div>
+        <div class="links">
+            <img src="../images/fb.png" alt="facebook"   height="20px" width="20px" style="padding: 0% 2%;">
+            <img src="../images/fb.png" alt="Instagram"  height="20px" width="20px"  style="padding: 0% 2%;">
+            <img src="../images/fb.png" alt="Twitter" height="20px" width="20px"  style="padding: 0% 2%;">
+            <img src="../images/fb.png" alt="Youtube" height="20px" width="20px"  style="padding: 0% 2%;">
+            <img src="../images/fb.png" alt="linkedin" height="20px" width="20px" style="padding: 0% 2%;">
+            <img src="../images/fb.png" alt="whatsapp" height="20px" width="20px" style="padding: 0% 2%;">
+        </div>
+    </footer>
+    <script>
+        const asd=document.querySelector('.confirmation');
+        const d=document.querySelector('.container');
+        const bt=document.getElementById('submit');
+        const bod=document.getElementById('bd');
+
+        bt.addEventListener('click', (event) => {
+            event.preventDefault();
+            asd.style.display = 'block';
+            d.classList.add('show');
+            event.stopPropagation();
+        });
+
+        bod.addEventListener('click', () => {
+            d.classList.remove('show');
+            asd.style.display = 'none';
+        }); 
+        document.getElementById('patient').addEventListener('click', function() {
+            window.location.href = './patientinfo.html';
+        });  
+        document.getElementById('doctor').addEventListener('click', function() {
+            window.location.href = './doctorinfo.html';
+        });
+    </script>
+</body>
+</html>

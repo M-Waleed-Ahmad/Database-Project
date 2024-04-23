@@ -1,30 +1,7 @@
-*{
+* {
     margin: 0%;
     padding: 0%;
 }
-/* NavBar Styles */
-.navbar{
-    display: flex;
-    justify-content: center;
-    border: 2px solid black;
-}
-.navbar ul{
-    display: flex;
-    justify-content: center;
-    border: 2px solid black;
-    background-color:  #E0F2FE;
-    margin: 1% ;
-    padding: 2% 8%;
-    border-radius: 30px;
-}
-.navbar li{
-    list-style: none;
-    padding: 1% 6%;
-}
-.navbar a{
-    text-decoration: none;
-}
-    /* CSS styles for Signup Page */
 
 body {
     font-family: Arial, sans-serif;
@@ -34,14 +11,13 @@ body {
 }
 
 .container {
-    max-width: 400px;
+    max-width: 500px;
     margin: 100px auto;
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     background-color: #E0F2FE;
-
 }
 
 h1 {
@@ -51,7 +27,6 @@ h1 {
 
 .form-group {
     margin-bottom: 20px;
-    margin-right: 20px;
 }
 
 label {
@@ -62,12 +37,16 @@ label {
 
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+select,
+textarea,
+input[type="number"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    margin-bottom: 10px;
 }
 
 button[type="submit"] {
@@ -95,6 +74,65 @@ a {
 }
 
 
+.name-group {
+    display: flex;
+}
+
+.half {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.half:last-child {
+    margin-right: 20px;
+    margin-left: 50px;
+}
+
+.input_len_e{
+ margin-right: 20px;
+
+}
+.confirmation {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.h {
+    text-align: center;
+    color: #333;
+    margin-top: 10px;
+}
+
+.confirmation div {
+    display: flex;
+    justify-content: center;
+}
+
+.confirmation button {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.confirmation button:hover {
+    background-color: #0056b3;
+}
+
+
 /* Footer Stylings */
 footer{
     background: black;
@@ -110,6 +148,7 @@ footer{
     margin: 1%;
     justify-content: center;
 }
-h1{
-    text-align: center;
+
+.container.show {
+    opacity: 0.4; /* Apply opacity only to the container */
 }
