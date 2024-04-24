@@ -24,6 +24,7 @@ app.get('/contact', (req, res) => {
 
 app.get('/services', (req, res) => {
     res.sendFile('services.html', { root: publicDirectoryPath });
+    
 });
 
 app.get('/doctors', (req, res) => {
