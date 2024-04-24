@@ -3,7 +3,6 @@ const path = require('path');
 const app = express();
 
 const port = 80;
-
 // Define paths for static files
 const publicDirectoryPath = path.join(__dirname, 'src');
 
