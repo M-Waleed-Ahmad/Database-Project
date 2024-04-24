@@ -3,7 +3,7 @@ const sql= require('mssql/msnodesqlv8');
 const { error } = require('console');
 
 const config={
-    server: 'NOX',
+    server: 'HP-AZLAN',
     database: "mesd",
     driver:"msnodesqlv8",
     options:{
