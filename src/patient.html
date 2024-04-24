@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width= , initial-scale=1.0">
     <link rel="stylesheet" href="../css/patient.css">
-    <link rel="shortcut icon" href="../images/logo.jfif" type="image/x-icon">
+    <link rel="shortcut icon" href="../images/logo.jpg" type="image/x-icon">
     <title>Patient Page</title>
 </head>
 <body style="background-color: aliceblue;">
@@ -13,10 +13,10 @@
             <div style="grid-area: 1/1;">
                  <div class="sidebar" id="sidebar">
                      <ul>
-                         <li><a href="#">Link 1</a></li>
-                         <li><a href="#">Link 2</a></li>
-                         <li><a href="#">links 3</a></li>
-                     </ul>
+                         <li><a href="#">Logout</a></li>
+                         <li><a href="#">Setting</a></li>
+                         <li><a class="item" id="link1" href="#" onclick="toggleSection(document.getElementById('link1'));">Profile</a></li>
+                    </ul>
                  </div>
                 
                  <div class="hamburger" id="hamburger">
@@ -40,7 +40,6 @@
         </nav>
         <nav class="innernav2">
             <ul>
-                <li><a class="item" id="link1" href="#" onclick="toggleSection(document.getElementById('link1'));toggleLine(this)">Profile</a></li>
                 <li><a class="item" id="link2" href="#"  onclick="toggleSection(document.getElementById('link2'));toggleLine(this)">Appointments</a></li>
                 <li><a class="item" id="link3" href="#"  onclick="toggleSection(document.getElementById('link3'));toggleLine(this)">Consultations</a></li>
                 <li><a class="item" id="link4" href="#"  onclick="toggleSection(document.getElementById('link4'));toggleLine(this)">Prescriptions</a></li>
@@ -58,7 +57,7 @@
         </ul>
     </section>
      <section class="container" id="div-section">
-        <!-- Profile -->
+        <!-- Profile  -->
         <div id="div1" class="div1">
             <div  class="profile">
                 <!-- Profile Image -->

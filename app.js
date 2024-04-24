@@ -1,20 +1,77 @@
 const express = require('express');
+const path = require('path');
 const app = express();
+
 const port = 80;
 
+// Establish connection to database
+const {createPool}= require('mysql2');
+const { error } = require('console');
+const pool=createPool({
+    host:'localhost',
+    user:'root',
+    password:'waleed1086',
+    database:'mesd',
+    connectionLimit:100
+})
 
-// Loading Css and images
-app.use('/styles', express.static(__dirname + '/styles'));
+// Define paths for static files
+const publicDirectoryPath = path.join(__dirname, 'src');
+
+app.use('/css', express.static(__dirname + '/css'));
 app.use('/images', express.static(__dirname + '/images'));
 
+// Endpoints
+app.get('/', (req, res) => {
+    res.sendFile('index.html', { root: publicDirectoryPath });
+});
 
-// Handling Requests
+app.get('/home', (req, res) => {
+    res.sendFile('home.html', { root: publicDirectoryPath });
+});
 
+app.get('/contact', (req, res) => {
+    res.sendFile('contact.html', { root: publicDirectoryPath });
+});
 
+app.get('/services', (req, res) => {
+    res.sendFile('services.html', { root: publicDirectoryPath });
+});
 
+app.get('/doctors', (req, res) => {
+    res.sendFile('doctors.html', { root: publicDirectoryPath });
+});
+
+app.get('/SignUp', (req, res) => {
+    res.sendFile('signup.html', { root: publicDirectoryPath });
+});
+
+app.get('/login', (req, res) => {
+    res.sendFile('login.html', { root: publicDirectoryPath });
+});
+// []
+app.use(express.urlencoded());
+app.post('/contact',(req,res)=>{
+       uname=req.body.name;
+      uemail=req.body.email;
+      uphone=req.body.phone;
+      umess=req.body.message;
+      const sql = 'INSERT INTO ContactUs (UserName, Email, Message, PhoneNo) VALUES (?, ?, ?, ?)';
+      const values = [uname,uemail,uphone,umess];
+    
+      pool.query(sql,values,(err,suc)=>{
+        if (err) {
+            console.log('Error',err);
+            res.sendStatus(500);  
+        } else {
+            console.log('Data Inserted successfully');
+            res.sendStatus(200);  
+
+        }
+      })
+     
+})
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-    console.log('__dirname:', __dirname);
-
 });
