@@ -1,30 +1,17 @@
 
-const sql= require('mssql/msnodesqlv8');
+const {createPool}= require('mysql2');
 const { error } = require('console');
-
-const config={
-    server: 'HP-AZLAN',
-    database: "mesd",
-    driver:"msnodesqlv8",
-    options:{
-        trustedConnection:true
-    }
-
-}
-sql.connect(config,function(err){
+const pool=createPool({
+    host:'localhost',
+    user:'root',
+    password:'waleed1086',
+    database:'mesd',
+    connectionLimit:100
+})
+pool.query(' select * from users;',(err,res,field)=>{
     if (err) {
-        console.log('error ',err);
-    }
-    else
-        console.log('COnnections successful ');
-
-    var reqs=new sql.Request();
-    reqs.query('SELECT * FROM Users',(err,res)=>{
-        if (err) {
             console.log('error',err);
-        } else {
-            console.log('result',res);
-            
-        }
-    })
+    } else {
+        return console.log('result ',res);
+    }
 })
