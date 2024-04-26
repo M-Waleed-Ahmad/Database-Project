@@ -1,10 +1,13 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
 const { v4: uuidv4 } = require('uuid');
-
-const port = 80;
-
+// Import the variable from file1.js
+ // Now you can use the imported variable
+ const port = 80;
 // Establish connection to database
 const {createPool}= require('mysql2');
 const { error } = require('console');
@@ -21,10 +24,10 @@ const publicDirectoryPath = path.join(__dirname, 'src');
 
 app.use('/css', express.static(__dirname + '/css'));
 app.use('/images', express.static(__dirname + '/images'));
-
+app.use(express.static('src'));
 // Endpoints
 app.get('/', (req, res) => {
-    res.sendFile('index.html', { root: publicDirectoryPath });
+    res.sendFile('cover.html', { root: publicDirectoryPath });
 });
 
 app.get('/home', (req, res) => {
@@ -96,38 +99,46 @@ app.post('/Signup', (req, res) => {
       res.redirect('/signup/patient');
     }
   });
+
 app.post('/signup/patient',(req,res)=>{
-    const data=req.body;
-    console.log('signu',form_data);
-    console.log('signus',data);
-
-    fname=form_data.firstname;
-    lname=form_data.lastname;
-    email=form_data.email;
-    password=form_data.password;
-    gender=form_data.gender;
-    const sql1='INSERT INTO Users (UserID, PositionID, FirstName, LastName, Email, Password, Gender)VALUES (?,?,?,?,?,?,?)';
-    const values1=[userid,3,fname,lname,email,password,gender];
-    const sql2='INSERT INTO Patients (PatientID, UserID, Age, Weight, Height)VALUES (?,?,?,?,?)';
-    values2=[uuidv4(),userid,2,2,req.body.height];
-
-    pool.query(sql1,values1,(err,SUC)=>{
+    patientd=uuidv4();
+    const {firstname,lastname,email,password,gender}=form_data;
+    console.log(req.body);
+    const { age,weight,height,disease, Allergies, medicalHistory,treatment} = req.body;
+    const user_query='INSERT INTO Users (UserID, PositionID, FirstName, LastName, Email, Password, Gender)VALUES (?,?,?,?,?,?,?)';
+    const values1=[userid,3,firstname,lastname,email,password,gender];
+    const patient_query='INSERT INTO Patients (PatientID, UserID, Age, Weight, Height,Disease,Allergies)VALUES (?,?,?,?,?,?,?)';    
+    const values2=[patientd,userid,age,weight,height,disease,Allergies];
+    const med_query='Insert into healthrecords(ehrid,patientid,MedicalHistory,Treatment,status)values(?,?,?,?,?)';
+    
+    pool.query(user_query,values1,(err,SUC)=>{
         if (err) {
             console.log('Error:',err);
         } else {
             console.log('Data inserted successfully');
-            res.sendStatus(200);  
-        }
+         }
     })
-    pool.query(sql2,values2,(err,SUC)=>{
+    pool.query(patient_query,values2,(err,SUC)=>{
         if (err) {
             console.log('Error:',err);
         } else {
             console.log('Data inserted successfully');
-            res.sendStatus(200);  
         }
     })
     
+    for (let int = 0; int < medicalHistory.length-1; int++) {
+        const values3=[uuidv4(),patientd,medicalHistory[int],treatment[int],'past'];
+        console.log('int=',medicalHistory.length);
+        pool.query(med_query,values3,(err,SUC)=>{
+            if (err) {
+                console.log('Error:',err);
+            } else {
+                console.log('Data inserted successfully');
+            }
+        })
+        
+    }
+    res.sendStatus(200);
 })
 app.post('/signup/doctor',(req,res)=>{
 
@@ -136,4 +147,5 @@ app.post('/signup/doctor',(req,res)=>{
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
+    console.log()
 });
