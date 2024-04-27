@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
 app.use(bodyParser.json());
 const { v4: uuidv4 } = require('uuid');
@@ -9,6 +11,7 @@ const { v4: uuidv4 } = require('uuid');
 // Establish connection to database
 const {createPool}= require('mysql2');
 const { error } = require('console');
+const { send } = require('process');
 const pool=createPool({
     host:'localhost',
     user:'root',
@@ -53,7 +56,15 @@ app.get('/SignUp/patient', (req, res) => {
 });
 app.get('/SignUp/doctor', (req, res) => {
     res.sendFile('doctorinfo.html', { root: publicDirectoryPath });
-   
+    
+});
+app.get('/patient', (req, res) => {
+    res.sendFile('patient.html', { root: publicDirectoryPath });
+    
+});
+app.get('/doctor', (req, res) => {
+    res.sendFile('doctor.html', { root: publicDirectoryPath });
+    
 });
 
 app.get('/login', (req, res) => {
@@ -168,8 +179,69 @@ app.post('/signup/patient',(req,res)=>{
     res.sendStatus(200);
 })
 app.post('/signup/doctor',(req,res)=>{
-
+    doctorid=uuidv4();
+     const {firstname,lastname,email,password,gender}=form_data;
+     console.log(req.body);
+    const { LicenseNo,Country,Experience,Qualification, institution, languages,Specialization} = req.body;
+    const user_query='INSERT INTO Users (UserID, PositionID, FirstName, LastName, Email, Password, Gender)VALUES (?,?,?,?,?,?,?)';
+    const values1=[userid,3,firstname,lastname,email,password,gender];
+    const doctor_query='INSERT INTO Doctors (DoctorID, UserID, Specialization, Qualification, LicenseNo,Institute,Experience,Language)VALUES(?,?,?,?,?,?,?,?)';    
+    const values2=[doctorid,userid,Specialization,Qualification,LicenseNo,institution, Experience, languages];
+    pool.query(user_query,values1,(err,SUC)=>{
+        if (err) {
+            console.log('Error:',err);
+        } else {
+            console.log('Data inserted successfully');
+         }
+    })
+    pool.query(doctor_query,values2,(err,SUC)=>{
+        if (err) {
+            console.log('Error:',err);
+        } else {
+            console.log('Data inserted successfully');
+        }
+    })
+    
+    res.sendStatus(200);
 })
+
+app.post('/login',(req,res)=>{
+    const {email,password}=req.body;
+    check=false;
+    pool.query('select firstName,email,password,positionid from users',(err,result)=>{
+        if (err) {
+            console.log('Error:',err);
+        } else {
+            result.forEach(element => {
+                if (element.email===email && element.password===password) {
+                    console.log('Login Successfull'); 
+                    check=true;
+                    username=element.firstname;
+                    positionid=element.positionid;
+                }
+            });
+            if (check==false) {
+                console.log('Login Unuccessfull');    
+            }
+            else{
+                cookieData={
+                    id:username,
+                    mail:email,
+                    loggedin:true }
+                    res.cookie('cookiedata', cookieData, { maxAge: 900000, httpOnly: true });
+                    if (positionid===3) {
+                        res.redirect('/patient');
+                    } 
+                    else {
+                        res.redirect('/patient');
+                    }
+                        
+            }
+            
+        }
+    });
+})
+
 
 // Start the server
 app.listen(port, () => {
