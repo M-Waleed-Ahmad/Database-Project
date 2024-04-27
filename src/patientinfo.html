@@ -64,7 +64,12 @@
                 </div>
                    
             </div>
-
+            <div class="form-group" id="disease">
+                <div class="input_len_e">
+                    <label for="disease">Disease:</label>
+                    <input type="text" id="disease" name="disease" required>
+                </div>
+            </div>
             <div class="form-group" id="medical-history-fields">
                 <div class="input_len_e">
                     <label for="medicalHistory">Medical History 1:</label>
@@ -73,32 +78,30 @@
                     <input type="text" id="treatment1" name="treatment" required>
                 </div>
             </div>
-            <button type="button" class="add" onclick="addMedicalHistoryField()">Add More</button>
-
+            <button type="button" id="waleed" class="add">Add More</button>
          <br>
             
             <button type="submit">Sign Up</button>
         </form>
         <p>Already have an account? <a href="login.html">Log in</a></p>
     </div>
-    <script>
+    <script >
         let medicalHistoryCount = 1;
-
-function addMedicalHistoryField() {
-    medicalHistoryCount++;
-    const container = document.getElementById('medical-history-fields');
-    const newField = document.createElement('div');
-    newField.innerHTML = `
-        <div class="input_len_e">
-            <label for="medicalHistory">Medical History ${medicalHistoryCount}:</label>
-            <textarea id="medicalHistory${medicalHistoryCount}" name="medicalHistory" rows="4" required></textarea>
-            <label for="treatment${medicalHistoryCount}">Treatment:</label>
-            <input type="text" id="treatment${medicalHistoryCount}" name="treatment" required>
-        </div>
-    `;
-    container.appendChild(newField);
-}
-
+        const as=document.getElementById('waleed');
+        as.addEventListener('click',()=>{
+            medicalHistoryCount++;
+            const container = document.getElementById('medical-history-fields');
+            const newField = document.createElement('div');
+            newField.innerHTML = `
+                <div class="input_len_e">
+                    <label for="medicalHistory">Medical History ${medicalHistoryCount}:</label>
+                    <textarea id="medicalHistory${medicalHistoryCount}" name="medicalHistory" rows="4" required></textarea>
+                    <label for="treatment${medicalHistoryCount}">Treatment:</label>
+                    <input type="text" id="treatment${medicalHistoryCount}" name="treatment" required>
+                </div>
+            `;
+            container.appendChild(newField);
+        }) 
     </script>
 </body>
 </html>
