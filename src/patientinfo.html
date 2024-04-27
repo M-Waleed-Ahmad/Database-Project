@@ -86,23 +86,22 @@
         <p>Already have an account? <a href="login.html">Log in</a></p>
     </div>
     <script >
-        // ADd more medical fields to pateints signup page
-let medicalHistoryCount = 1;
-const as=document.getElementById('waleed');
-as.addEventListener('click',()=>{
-    medicalHistoryCount++;
-    const container = document.getElementById('medical-history-fields');
-    const newField = document.createElement('div');
-    newField.innerHTML = `
-        <div class="input_len_e">
-            <label for="medicalHistory">Medical History ${medicalHistoryCount}:</label>
-            <textarea id="medicalHistory${medicalHistoryCount}" name="medicalHistory" rows="4" required></textarea>
-            <label for="treatment${medicalHistoryCount}">Treatment:</label>
-            <input type="text" id="treatment${medicalHistoryCount}" name="treatment" required>
-        </div>
-    `;
-    container.appendChild(newField);
-}) 
+        let medicalHistoryCount = 1;
+        const as=document.getElementById('waleed');
+        as.addEventListener('click',()=>{
+            medicalHistoryCount++;
+            const container = document.getElementById('medical-history-fields');
+            const newField = document.createElement('div');
+            newField.innerHTML = `
+                <div class="input_len_e">
+                    <label for="medicalHistory">Medical History ${medicalHistoryCount}:</label>
+                    <textarea id="medicalHistory${medicalHistoryCount}" name="medicalHistory" rows="4" required></textarea>
+                    <label for="treatment${medicalHistoryCount}">Treatment:</label>
+                    <input type="text" id="treatment${medicalHistoryCount}" name="treatment" required>
+                </div>
+            `;
+            container.appendChild(newField);
+        }) 
     </script>
 </body>
 </html>

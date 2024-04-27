@@ -60,3 +60,4 @@ function slide(direction) {
     slider.style.transition = 'transform 1.5s ease-in-out';
     slider.style.transform = 'translateX(0)';
 }
+// Event Listener for adding more medical fields

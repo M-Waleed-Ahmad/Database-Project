@@ -5,8 +5,6 @@ const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 const { v4: uuidv4 } = require('uuid');
-// Import the variable from file1.js
- // Now you can use the imported variable
  const port = 80;
 // Establish connection to database
 const {createPool}= require('mysql2');
@@ -25,6 +23,7 @@ const publicDirectoryPath = path.join(__dirname, 'src');
 app.use('/css', express.static(__dirname + '/css'));
 app.use('/images', express.static(__dirname + '/images'));
 app.use(express.static('src'));
+
 // Endpoints
 app.get('/', (req, res) => {
     res.sendFile('cover.html', { root: publicDirectoryPath });
@@ -92,18 +91,46 @@ app.post('/Signup', (req, res) => {
     const { role } = req.body;
     userid=uuidv4();
     form_data=req.body;
-    console.log(form_data);
-     if (role === 'doctor') {
-      res.redirect('/signup/doctor');
-    } else {
-      res.redirect('/signup/patient');
-    }
+    // console.log(form_data);
+    
+    let check=true;
+    pool.query('select email from users',(err,result)=>{
+        if (err) {
+            console.log('Error signup:',err);
+        } 
+        else
+        {
+            result.forEach(element => {
+                if (element.email==req.body.email) {
+                    check=false;
+                }
+            });
+                
+            console.log(check);
+            
+            if (check === true)
+            {
+                if (role === 'doctor') 
+                {
+                    res.redirect('/signup/doctor'); 
+                }
+                else 
+                {
+                    res.redirect('/signup/patient');
+                }
+            }
+            else{
+                res.sendStatus(500);
+            }
+
+        }
+    })
   });
 
 app.post('/signup/patient',(req,res)=>{
     patientd=uuidv4();
     const {firstname,lastname,email,password,gender}=form_data;
-    console.log(req.body);
+    // console.log(req.body);
     const { age,weight,height,disease, Allergies, medicalHistory,treatment} = req.body;
     const user_query='INSERT INTO Users (UserID, PositionID, FirstName, LastName, Email, Password, Gender)VALUES (?,?,?,?,?,?,?)';
     const values1=[userid,3,firstname,lastname,email,password,gender];
