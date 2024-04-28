@@ -47,26 +47,26 @@ function executeQuery(query) {
 
 // Endpoints
 app.get('/', (req, res) => {
-    res.render('cover');
+    res.render('Cover-Page');
 });
 
 app.get('/home', (req, res) => {
-    res.render('home');
+    res.render('Home-Page');
 });
 
 app.get('/contact', (req, res) => {
-    res.render('contact');
+    res.render('Contactus-Page');
 });
 
 app.get('/services', (req, res) => {
-    res.render('services');
+    res.render('Services-Page');
 });
 
 app.get('/doctors', async(req, res) => {
   executeQuery('SELECT * FROM doctors')
   .then(doctors => {
     console.log(doctors);
-    res.render('doctors', { doctors }); // Render the template after data retrieval
+    res.render('Doctors-Page', { doctors }); // Render the template after data retrieval
 
   })
   .catch(error => {
@@ -75,18 +75,18 @@ app.get('/doctors', async(req, res) => {
 });
 
 app.get('/SignUp', (req, res) => {
-  res.render('signup');
+  res.render('Signup-Page');
 });
 app.get('/SignUp/patient', (req, res) => {
-  res.render('patientinfo');
+  res.render('Patient-Signup');
 });
 app.get('/SignUp/doctor', (req, res) => {
-  res.render('doctorinfo');    
+  res.render('Doctor-Signup');    
 });
 app.get('/patient', (req, res) => {
    
     if (req.cookies.cookiedata.loggedin==true) {
-      res.render('patient');
+      res.render('Patient-Profile');
     } else {
         
         res.send('login timing expired');
@@ -94,12 +94,12 @@ app.get('/patient', (req, res) => {
     
 });
 app.get('/doctor', (req, res) => {
-    res.render('doctorinfo');
+    res.render('Doctor-Profile');
     
 });
 
 app.get('/login', (req, res) => {
-  res.render('login');
+  res.render('Login-Page');
 });
 // Contact us form submit krne k lie
 app.post('/contact',(req,res)=>{
