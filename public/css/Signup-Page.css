@@ -131,24 +131,6 @@ a {
 .confirmation button:hover {
     background-color: #0056b3;
 }
-
-
-/* Footer Stylings */
-footer{
-    background: black;
-    display:block;
-    color: white;
-    padding: 9px 20px;
-}
-.center{
-    text-align: center;
-}
-.links{
-    display: flex;
-    margin: 1%;
-    justify-content: center;
-}
-
 .container.show {
     opacity: 0.4; /* Apply opacity only to the container */
 }

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width= , initial-scale=1.0">
-    <link rel="stylesheet" href="../css/patient.css">
+    <link rel="stylesheet" href="../css/Patient-Profile.css">
+    <link rel="stylesheet" href="../css/Components.css">
     <link rel="shortcut icon" href="../images/logo.jpg" type="image/x-icon">
     <title>Patient Page</title>
 </head>
@@ -33,8 +34,8 @@
                      <li><a class="as" href="">Contact Us</a></li>
                      <li><a class="as" href="">Doctors</a></li>
                  </ul>
-                 <div class="search-icon">
-                     <input type="text" id="box" placeholder="Search" class="searchbox">
+                 <div class="search-icon1">
+                     <input type="text" id="box" placeholder="Search" class="searchbox1">
                      <img src="../images/search.svg" id="icon" alt=""  >
                  </div>
         </nav>
@@ -216,19 +217,8 @@
             
         </div>
      </section>
-     <footer>
-        <div class="center">
-            Copyright &copy; www.webforgersnexus.com. All rights reserved!
-        </div>
-        <div class="links">
-            <img src="../images/fb.png" alt="facebook"   height="20px" width="20px" style="padding: 0% 2%;">
-            <img src="../images/fb.png" alt="Instagram"  height="20px" width="20px"  style="padding: 0% 2%;">
-            <img src="../images/fb.png" alt="Twitter" height="20px" width="20px"  style="padding: 0% 2%;">
-            <img src="../images/fb.png" alt="Youtube" height="20px" width="20px"  style="padding: 0% 2%;">
-            <img src="../images/fb.png" alt="linkedin" height="20px" width="20px" style="padding: 0% 2%;">
-            <img src="../images/fb.png" alt="whatsapp" height="20px" width="20px" style="padding: 0% 2%;">
-        </div>
-   </footer>
+     <%- include('./partials/Footer')%></body>
+
 
     <script>
          const sidebar = document.getElementById('sidebar');

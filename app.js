@@ -1,17 +1,25 @@
 const express = require('express');
+const ejs =  require('ejs');
 const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-app.use(cookieParser());
+const {createPool}= require('mysql2');
+const { v4: uuidv4 } = require('uuid');
+const port = 80;
+
+
+
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
-const { v4: uuidv4 } = require('uuid');
- const port = 80;
+app.use(cookieParser());
+app.use(express.static('public'));
+app.use(express.urlencoded());
+
 // Establish connection to database
-const {createPool}= require('mysql2');
-const { error } = require('console');
-const { send } = require('process');
 const pool=createPool({
     host:'localhost',
     user:'root',
@@ -19,59 +27,81 @@ const pool=createPool({
     database:'MED',
     connectionLimit:100
 })
+// Assuming you have a function to execute your query, for example:
+function executeQuery(query) {
+  return new Promise((resolve, reject) => {
+      // Execute your query here
+      // For example:
+      pool.query(query, (err, result) => {
+          if (err) {
+              reject(err); // Reject the promise if there's an error
+          } else {
+              resolve(result); // Resolve the promise with the result
+          }
+      });
+  });
+}
 
-// Define paths for static files
-const publicDirectoryPath = path.join(__dirname, 'src');
+// Usage:
 
-app.use('/css', express.static(__dirname + '/css'));
-app.use('/images', express.static(__dirname + '/images'));
-app.use(express.static('src'));
 
 // Endpoints
 app.get('/', (req, res) => {
-    res.sendFile('cover.html', { root: publicDirectoryPath });
+    res.render('Cover-Page');
 });
 
 app.get('/home', (req, res) => {
-    res.sendFile('home.html', { root: publicDirectoryPath });
+    res.render('Home-Page');
 });
 
 app.get('/contact', (req, res) => {
-    res.sendFile('contact.html', { root: publicDirectoryPath });
+    res.render('Contactus-Page');
 });
 
 app.get('/services', (req, res) => {
-    res.sendFile('services.html', { root: publicDirectoryPath });
+    res.render('Services-Page');
 });
 
-app.get('/doctors', (req, res) => {
-    res.sendFile('doctors.html', { root: publicDirectoryPath });
+app.get('/doctors', async(req, res) => {
+  executeQuery('SELECT * FROM doctors')
+  .then(doctors => {
+    console.log(doctors);
+    res.render('Doctors-Page', { doctors }); // Render the template after data retrieval
+
+  })
+  .catch(error => {
+      console.error('Error executing query:', error);
+  });
 });
 
 app.get('/SignUp', (req, res) => {
-    res.sendFile('signup.html', { root: publicDirectoryPath });
+  res.render('Signup-Page');
 });
 app.get('/SignUp/patient', (req, res) => {
-    res.sendFile('patientinfo.html', { root: publicDirectoryPath });
+  res.render('Patient-Signup');
 });
 app.get('/SignUp/doctor', (req, res) => {
-    res.sendFile('doctorinfo.html', { root: publicDirectoryPath });
-    
+  res.render('Doctor-Signup');    
 });
 app.get('/patient', (req, res) => {
-    res.sendFile('patient.html', { root: publicDirectoryPath });
+   
+    if (req.cookies.cookiedata.loggedin==true) {
+      res.render('Patient-Profile');
+    } else {
+        
+        res.send('login timing expired');
+    } 
     
 });
 app.get('/doctor', (req, res) => {
-    res.sendFile('doctor.html', { root: publicDirectoryPath });
+    res.render('Doctor-Profile');
     
 });
 
 app.get('/login', (req, res) => {
-    res.sendFile('login.html', { root: publicDirectoryPath });
+  res.render('Login-Page');
 });
 // Contact us form submit krne k lie
-app.use(express.urlencoded());
 app.post('/contact',(req,res)=>{
         cid=uuidv4();
        uname=req.body.name;
@@ -90,8 +120,7 @@ app.post('/contact',(req,res)=>{
             res.sendStatus(200);  
 
         }
-      })
-     
+      })    
 })
 // Signup khapat
 let form_data;      //Abhi global variables use kr raha but aage sessions explore krne hain 
@@ -208,6 +237,8 @@ app.post('/signup/doctor',(req,res)=>{
 app.post('/login',(req,res)=>{
     const {email,password}=req.body;
     check=false;
+    let username = ''; // Initialize username variable
+    let positionid = ''; // Initialize positionid variable
     pool.query('select firstName,email,password,positionid from users',(err,result)=>{
         if (err) {
             console.log('Error:',err);
@@ -224,17 +255,18 @@ app.post('/login',(req,res)=>{
                 console.log('Login Unuccessfull');    
             }
             else{
-                cookieData={
-                    id:username,
-                    mail:email,
-                    loggedin:true }
-                    res.cookie('cookiedata', cookieData, { maxAge: 900000, httpOnly: true });
-                    if (positionid===3) {
-                        res.redirect('/patient');
-                    } 
-                    else {
-                        res.redirect('/patient');
-                    }
+                const cookieData = {
+                    id: username,
+                    mail: email,
+                    loggedin: true
+                };
+                res.cookie('cookiedata', cookieData, { maxAge: 900000, httpOnly: true });
+                if (positionid===3) {
+                    res.redirect('/patient');
+                } 
+                else {
+                    res.redirect('/patient');
+                }
                         
             }
             
@@ -246,5 +278,5 @@ app.post('/login',(req,res)=>{
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-    console.log()
+ 
 });
