@@ -59,7 +59,13 @@ app.get('/SignUp/doctor', (req, res) => {
     
 });
 app.get('/patient', (req, res) => {
-    res.sendFile('patient.html', { root: publicDirectoryPath });
+   
+    if (req.cookies.cookiedata.loggedin==true) {
+        res.sendFile('patient.html', { root: publicDirectoryPath });
+    } else {
+        
+        res.send('login timing expired');
+    } 
     
 });
 app.get('/doctor', (req, res) => {
@@ -208,6 +214,8 @@ app.post('/signup/doctor',(req,res)=>{
 app.post('/login',(req,res)=>{
     const {email,password}=req.body;
     check=false;
+    let username = ''; // Initialize username variable
+    let positionid = ''; // Initialize positionid variable
     pool.query('select firstName,email,password,positionid from users',(err,result)=>{
         if (err) {
             console.log('Error:',err);
@@ -224,17 +232,18 @@ app.post('/login',(req,res)=>{
                 console.log('Login Unuccessfull');    
             }
             else{
-                cookieData={
-                    id:username,
-                    mail:email,
-                    loggedin:true }
-                    res.cookie('cookiedata', cookieData, { maxAge: 900000, httpOnly: true });
-                    if (positionid===3) {
-                        res.redirect('/patient');
-                    } 
-                    else {
-                        res.redirect('/patient');
-                    }
+                const cookieData = {
+                    id: username,
+                    mail: email,
+                    loggedin: true
+                };
+                res.cookie('cookiedata', cookieData, { maxAge: 900000, httpOnly: true });
+                if (positionid===3) {
+                    res.redirect('/patient');
+                } 
+                else {
+                    res.redirect('/patient');
+                }
                         
             }
             
