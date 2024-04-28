@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../css/doctors.css">
+        
+        <title>Document</title>
+    </head>
+    <body>
+        <%- include('./partials/navbar')%></body>
+        <section class="sect-1">
+            <% doctors.forEach(doctor => { %>
+                <div class="doc">
+                    <h2><%= doctor.Specialization %></h2>
+                    <p><strong>Qualification:</strong> <%= doctor.Qualification %></p>
+                    <p><strong>License No:</strong> <%= doctor.LicenseNo %></p>
+                    <p><strong>Institute:</strong> <%= doctor.Institute %></p>
+                    <p><strong>Experience:</strong> <%= doctor.Experience %> years</p>
+                    <button class="btn">Consult</button>
+                    <!-- Add more details as needed -->
+                </div>
+            <% }); %>
+         </section>
+        
+    </body>
+</html>
