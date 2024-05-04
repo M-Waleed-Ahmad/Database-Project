@@ -10,7 +10,7 @@
         <link href="https://fonts.googleapis.com/css?family=Baloo+Bhai|Bree+Serif&display=swap" rel="stylesheet">
         <title>Home</title>
     </head>
-    <body style="background-color: aliceblue;">
+    <body style="background-color: #b9d6eb;">
         
         <%- include('./partials/navbar')%></body>
     
@@ -28,7 +28,7 @@
                 </div>
                 <div class="slide">
                     <div class="slide-content">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam quidem neque optio consequuntur maxime dignissimos rem similique mollitia in ab harum incidunt quo, velit laborum veritatis sit. Neque, fuga quas!</p>
+                        <p>Lorem ipsum dolor sit  d, consectetur adipisicing elit. Laboriosam quidem neque optio consequuntur maxime dignissimos rem similique mollitia in ab harum incidunt quo, velit laborum veritatis sit. Neque, fuga quas!</p>
                     </div>
                 </div>
             </div>
@@ -120,20 +120,7 @@
                 showSlide(nextIndex); 
             }
 
-            // Event Listener for toggling search button
-            document.getElementById('icon').addEventListener('click', function() {
-                var searchBox = document.getElementById('box');
-                if (searchBox.classList.contains('show')) {
-                    searchBox.classList.remove('show'); 
-                    document.getElementById('box').disabled = true;
-                } else {
-                    searchBox.classList.add('show');
-                    document.getElementById('box').disabled = false; 
-
-                }
-            
-
-            });
+        
 
             // Event listener for listing services 
 

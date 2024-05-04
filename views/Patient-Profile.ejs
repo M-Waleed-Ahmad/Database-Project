@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="../images/logo.jpg" type="image/x-icon">
     <title>Patient Page</title>
 </head>
-<body style="background-color: aliceblue;">
+<body style="background-color: #b9d6eb;">
     <nav class="outernav">
         <nav class="innernav1">
             <div style="grid-area: 1/1;">
@@ -16,7 +16,7 @@
                      <ul>
                          <li><a href="#">Logout</a></li>
                          <li><a href="#">Setting</a></li>
-                         <li><a class="item" id="link1" href="#" onclick="toggleSection(document.getElementById('link1'));">Profile</a></li>
+                         <li><a class="item" id="link1"  data-section="1" href="#" onclick="toggleSection(document.getElementById('link1'));">Profile</a></li>
                     </ul>
                  </div>
                 
@@ -29,22 +29,22 @@
            
                  <img src="../images/profile-default.svg" alt="">
                  <ul>
-                     <li><a class="as" href="">Home</a></li>
-                     <li><a class="as" href="">Services</a></li>
-                     <li><a class="as" href="">Contact Us</a></li>
-                     <li><a class="as" href="">Doctors</a></li>
+                     <li><a class="as" href="/home">Home</a></li>
+                     <li><a class="as" href="/services">Services</a></li>
+                     <li><a class="as" href="/contact">Contact Us</a></li>
+                     <li><a class="as" href="doctors">Doctors</a></li>
                  </ul>
-                 <div class="search-icon1">
-                     <input type="text" id="box" placeholder="Search" class="searchbox1">
-                     <img src="../images/search.svg" id="icon" alt=""  >
-                 </div>
+                 <div class="search-icon">
+                    <input type="text" id="search-box" placeholder="Search">
+                    <button type="submit" id="search-button"><i class="fa fa-search">ss</i></button>
+                </div>
         </nav>
         <nav class="innernav2">
             <ul>
-                <li><a class="item" id="link2" href="#"  onclick="toggleSection(document.getElementById('link2'));toggleLine(this)">Appointments</a></li>
-                <li><a class="item" id="link3" href="#"  onclick="toggleSection(document.getElementById('link3'));toggleLine(this)">Consultations</a></li>
-                <li><a class="item" id="link4" href="#"  onclick="toggleSection(document.getElementById('link4'));toggleLine(this)">Prescriptions</a></li>
-                <li><a class="item" id="link5" href="#"  onclick="toggleSection(document.getElementById('link5'));toggleLine(this)">Support Community</a></li>
+                <li><a class="item" id="link2" href="#"  data-section="2"  onclick="toggleSection(document.getElementById('link2'));toggleLine(this)">Appointments</a></li>
+                <li><a class="item" id="link3" href="#"  data-section="3" onclick="toggleSection(document.getElementById('link3'));toggleLine(this)">Consultations</a></li>
+                <li><a class="item" id="link4" href="#"  data-section="4" onclick="toggleSection(document.getElementById('link4'));toggleLine(this)">Prescriptions</a></li>
+                <li><a class="item" id="link5" href="#"  data-section="5" onclick="toggleSection(document.getElementById('link5'));toggleLine(this)">Support Community</a></li>
             </ul>
             <div class="line"></div>
         </nav>
@@ -58,232 +58,225 @@
         </ul>
     </section>
      <section class="container" id="div-section">
-        <!-- Profile  -->
-        <div id="div1" class="div1">
-            <div  class="profile">
-                <!-- Profile Image -->
-                <div class="sect-1">
-                <div style="display: flex;justify-content: center;">
-                    <img src="../images/profile-default.svg" alt="Profile Picture">
-                </div>
-           <!-- Basic and Emergency Information -->
-                <div class="info">
-                    <p><strong>Name:</strong> Patient</p>
-                    <p><strong>Blood Type:</strong> O+</p>
-                    <p><strong>Allergies:</strong> Penicillin</p>
-                    <p><strong>Medical Conditions:</strong> Diabetes, Hypertension</p>
-                    <p><strong>Emergency Contact:</strong> Jane Doe (Spouse)</p>
-                </div>
-                </div>
-         
-                      <!-- Current and Past Health Records (On the Right Side) -->
-            <div class="sect-2" >
-                <nav class="prof-nav">
-                    <ul>
-                        <li><a class="item1" id="link1" href="#" onclick="toggleLine1(this)">Current EHR</a></li>
-                        <li><a class="item1" id="link2" href="#" onclick="toggleLine1(this)">Past EHR</a></li>
-                    </ul>
-                    <div class="line1"></div>
-                </nav>
-            </div>
-      
-            </div>
-        </div>
-     
-        <!-- Appointments -->
-        <div id="div2" class="div2">
-            <button class="btn">Create Appointments</button>
-      
-            <div class="appoint">
-                    <section class="Appointments-1">
-                        <div class="doc" id="doc-1" onclick="displayData('doc-1')">
-                            <p><strong>Name:</strong> Patient1</p>
-                            <p><strong>Case:</strong> B+</p>
-                            <p><strong>Date:</strong> Penicillin</p>
-                        </div>
-                        <div class="doc" id="doc-2" onclick="displayData('doc-2')">
-                            <p><strong>Name:</strong> Patient2</p>
-                            <p><strong>Case:</strong> C+</p>
-                            <p><strong>Date:</strong> ASTHMA</p>
-                
-                        </div>
-                        <div class="doc" id="doc-3"onclick=" displayData('doc-3')">
-                            <p><strong>Name:</strong> Patient3</p>
-                            <p><strong>Case:</strong> A+</p>
-                            <p><strong>Date:</strong> ECZEMA</p>
-        
-                        </div>
-                        <div class="doc" id="doc-4" onclick="displayData('doc-4')">
-                            <p><strong>Name:</strong> Patient4</p>
-                            <p><strong>Case:</strong> D+</p>
-                            <p><strong>Date:</strong> ICE CREAM</p>
-        
-                        </div>
-                        <div class="doc" id="doc-5" onclick="displayData('doc-5')">
-                            <p><strong>Doctor:</strong> Patient</p>
-                            <p><strong>Case:</strong> O+</p>
-                            <p><strong>Date:</strong> Penicillin</p>
-        
-                        </div>
-                    </section>
-                    <section class="appointments-2">
-                    
-            </div>
-        </div>
- 
-        </div>
-        <!-- Consultations -->
-        <div id="div3" class="div3">
-            <header>
-                <h1>Consultations</h1>
-            </header>
-            <main>
-                <section id="chats" class="section">
-                    <h2>Your Chats</h2>
-                    <div class="chat-list">
-                        <!-- Chat previews will be dynamically added here -->
-                    </div>
-                </section>
-                <section id="conversation" class="section">
-                    <h2>Conversation</h2>
-                    <div class="conversation">
-                        <!-- Conversation messages will be dynamically added here -->
-                    </div>
-                </section>
-            </main>
-            
-        </div>
-        <!-- Prescriptions -->
-        <div id="div4" class="div4">
-            <header>
-                <h1>Prescriptions</h1>
-            </header>
-            <main>
-                <section class="prescription-list">
-                    <h2>Your Prescriptions</h2>
-                    <ul>
-                        <!-- Prescriptions will be dynamically added here -->
-                    </ul>
-                </section>
-                <section class="prescription-details">
-                    <h2>Prescription Details</h2>
-                    <form id="prescription-form">
-                        <label for="doctor">Doctor:</label>
-                        <input type="text" id="doctor" name="doctor" required>
-                        <label for="medication">Medication:</label>
-                        <input type="text" id="medication" name="medication" required>
-                        <label for="dosage">Dosage:</label>
-                        <input type="text" id="dosage" name="dosage" required>
-                        <label for="frequency">Frequency:</label>
-                        <input type="text" id="frequency" name="frequency" required>
-                        <label for="remaining">Remaining Quantity:</label>
-                        <input type="number" id="remaining" name="remaining" required>
-                        <label for="next-refill">Next Refill Date:</label>
-                        <input type="date" id="next-refill" name="next-refill" required>
-                        <button type="submit">Add Prescription</button>
-                    </form>
-                </section>
-            </main>
-
-        </div>
-        <!-- Support Community -->
-        <div id="div5" class="div5">
-            <header>
-                <h1>Support Community</h1>
-            </header>
-            
-            <main id="supportf">
-                <section class="ask-question">
-                    <h2>Ask a Question</h2>
-                    <form action="#">
-                        <textarea name="question" id="question" placeholder="Type your question here..." required></textarea>
-                        <button type="submit">Submit</button>
-                    </form>
-                </section>
-            
-                <section class="recent-questions">
-                    <h2>Recent Questions</h2>
-                    <ul>
-                        <li>
-                            <h3>Question Title</h3>
-                            <p>Posted by: User123</p>
-                            <p>Date: January 1, 2024</p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac nulla sed quam vehicula...</p>
-                            <a href="#">View Details</a>
-                        </li>
-                    </ul>
-                </section>
-            </main>
-            
-        </div>
-     </section>
-     <%- include('./partials/Footer')%></body>
+        <div id="div1"></div>
+        <div id="div2"></div>
+        <div id="div3"></div>
+        <div id="div4"></div>
+        <div id="div5"></div>
+    </section>
 
 
     <script>
-         const sidebar = document.getElementById('sidebar');
-        const hamburger = document.getElementById('hamburger');
+ // Event listener to toggle the sidebar
+    const sidebar = document.getElementById('sidebar');
+    const hamburger = document.getElementById('hamburger');
 
-        hamburger.addEventListener('click', () => {
-            sidebar.style.left = sidebar.style.left === '0px' ? '-250px' : '0px';
-        });
- 
-        function toggleSection(aid)
-        {
-            const a=aid.id;
-            const s=a[4];
-            const bt_div1=document.getElementById('div1');
-            const bt_div2=document.getElementById('div2');
-            const bt_div3=document.getElementById('div3');
-            const bt_div4=document.getElementById('div4');
-            const bt_div5=document.getElementById('div5');
+    hamburger.addEventListener('click', () => {
+        sidebar.style.left = sidebar.style.left === '0px' ? '-250px' : '0px';
+    });
 
-            if (s==1)
-            {
-                bt_div1.style.display=bt_div1.style.display==='block'?'none':'block';   
-                bt_div2.style.display='none';   
-                bt_div3.style.display='none';   
-                bt_div4.style.display='none';   
-                bt_div5.style.display='none';   
-            }
-            else if(s==2)
-            {
-                bt_div2.style.display=bt_div2.style.display==='block'?'none':'block';   
-                bt_div1.style.display='none';   
-                bt_div3.style.display='none';   
-                bt_div4.style.display='none';   
-                bt_div5.style.display='none';   
-            }
-            else if(s==3)
-            {
-                bt_div3.style.display=bt_div3.style.display==='block'?'none':'block';   
-                bt_div2.style.display='none';   
-                bt_div1.style.display='none';   
-                bt_div4.style.display='none';   
-                bt_div5.style.display='none';   
-            }
-            else if (s==4)
-            {
-                bt_div4.style.display=bt_div4.style.display==='block'?'none':'block';   
-                bt_div2.style.display='none';   
-                bt_div3.style.display='none';   
-                bt_div1.style.display='none';   
-                bt_div5.style.display='none';   
-            }
-            else
-            {
-                bt_div5.style.display=bt_div5.style.display==='block'?'none':'block';   
-                bt_div2.style.display='none';   
-                bt_div3.style.display='none';   
-                bt_div4.style.display='none';   
-                bt_div1.style.display='none';   
-            }
+    // Function to toggle section and update URL without reloading the page
+    function toggleSection(element) {
+        const section = element.getAttribute('data-section'); // Get the section number 
+        const url = '/patient?section=' + section;
+        window.history.pushState({}, '', url); // Update URL without reloading the page
+    }
 
+    // Function to fetch data for the selected section using AJAX
+    function fetchData(section) {
+        // AJAX request
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/patient' + section, true);
+
+        // Set up onload handler
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 400) {
+                // On successful response, update the content of the section
+                const responseData = JSON.parse(xhr.responseText);
+                updateSectionContent(section, responseData);
+                console.log(responseData);
+            } else {
+                console.error('Request failed with status:', xhr.status);
+            }
         };
+
+        // Set up onerror handler
+        xhr.onerror = function() {
+            console.error('Request failed');
+        };
+
+        // Send the request
+        xhr.send();
+    }
+
+    // Function to update the content of the section based on the fetched data
+    function updateSectionContent(section, data) {
+        const sectionElement = document.getElementById(`div${section}`);
+    
+        switch (section) {
+            case '1':
+            for (let int = 2; int < 5; int++) {
+                document.getElementById(`div${int}`).style.display = 'none';
+            }
+            sectionElement.style.display = 'block';
+            sectionElement.innerHTML=`
+                <div id="div1" class="div1">
+                <div  class="profile">
+                    <!-- Profile Image -->
+                    <div class="sect-1">
+                        <div style="display: flex;justify-content: center;">
+                            <img src="../images/profile-default.svg" alt="Profile Picture">
+                        </div>
+                        <!-- Basic and Emergency Information -->
+                        <div class="info">
+                        
+                            <p><strong>Name:</strong>  ${data.Patient[0].FirstName}</p>
+                            <p><strong>Blood Type:</strong> O+</p>
+                            <p><strong>Allergies:</strong>${data.Patient[0].Allergies} </p>
+                            <p><strong>Medical Conditions:</strong>${data.Patient[0].Disease}</p>
+                            <p><strong>Emergency Contact:</strong> ${data.Patient[0].Contactname}</p>
+                        </div>
+                    </div>
+             
+                          <!-- Current and Past Health Records (On the Right Side) -->
+                    <div id="rec" class="sect-2 records" >
+                        <br>
+                    </div>
+                </div>
+            </div>        
+            `;
+            const sec = document.getElementById(`rec`);
+            n=data.Patient.length;
+            for (let int = 0; int < n; int++) {
+                sec.innerHTML += `
+                <p>
+                    <strong>Medical History:</strong>  ${data.Patient[int].FirstName}
+                    <strong>Treatment:</strong>  ${data.Patient[int].FirstName}
+                    <strong>Status:</strong>  ${data.Patient[int].FirstName}
+                </p>           
+            `;
+            }
+            console.log(data);
+    
+            break;
+            case '2':
+                sectionElement.style.display = 'block';
+                for (let int = 1; int <= 5; int++) {
+                    if (int==2) {
+                    continue;   
+                    }
+                    document.getElementById(`div${int}`).style.display = 'none';
+
+                }
+
+                sectionElement.innerHTML=`
+                <button class="btn">Create Appointments</button>
+      
+                <div class="appoint">
+                        <div class="Appointments-1">
+
+                        </div>
+                        <div class="appointments-2">
+                        </div>
+                </div>
+            </div>
+                `;
+                console.log(data); 
+                const appointments1Section = document.querySelector('.Appointments-1');
+                n=data.Appointments.length;
+                console.log(n);
+                for (let int = 0; int < n; int++) {
+                    appointments1Section.innerHTML += `
+                    <div class="doc" id="doc${int}" onclick="displayData('doc${int}')">
+                        <p><strong>Patient Name:</strong> ${data.Appointments[int].PatientFirstName}</p>
+                        <p><strong>Doctor Name:</strong> ${data.Appointments[int].DoctorLastName}</p>
+                        <p><strong>Case:</strong> ${data.Appointments[int].CaseDescription}</p>
+                        <p><strong>Date:</strong> ${data.Appointments[int].AppointmentDateTime}</p>
+                    </div>
+                        `;
+
+                }
+            break;
+            case '3':
+            sectionElement.style.display = 'block';
+                for (let int = 1; int <= 5; int++) {
+                    if (int==3) {
+                    continue;   
+                    }
+                    document.getElementById(`div${int}`).style.display = 'none';
+
+                }
+                console.log('ada');
+                sectionElement.innerHTML=`
+                <header>
+                <h1>Consultations</h1>
+                 </header>
+                <main>
+                    <div  class="chat">
+                        <h2>Your Chats</h2>
+                        <div id="chats" class="chat-list">
+                            <!-- Chat previews will be dynamically added here -->
+                        </div>
+                    </div>
+                    <div id="conversation" >
+                        <h2>Conversation</h2>
+                        <div class="conversation">
+                            <!-- Conversation messages will be dynamically added here -->
+                        </div>
+                    </div>
+                </main> 
+                `
+                chat=document.getElementById('chats');
+                console.log('chats  ',chat)
+                n=data.Messages.length;
+                for (let index = 0; index < n; index++) {
+                    chat.innerHTML+=`
+                    <div class="chat-box">
+                        <p>Doctor: ${data.Messages[index].OtherPersonFirstName+data.Messages[index].OtherPersonLastName}</p>
+                        </div>
+                        `                    
+                }
+                console.log('chats  ',chat)
+            
+                break;
+            case '4':
+                // Update Prescriptions section with data
+                break;
+            case '5':
+                // Update Support Community section with data
+                break;
+            default:
+                // Handle invalid section
+                break;
+        }
+    }
+
+    // Function to handle clicking on section links
+    function handleSectionClick(element) {
+        const section = element.getAttribute('data-section'); // Get the section number from data attribute
+        toggleSection(element); // Toggle section without reloading the page
+        fetchData(section); // Fetch data for the selected section
+    }
+
+    // Function to initialize the page
+    function initializePage() {
+        // Add event listeners to section links
+        const sectionLinks = document.querySelectorAll('.item');
+        sectionLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                handleSectionClick(link);
+            });
+        });
+    }
+
+    // Call initializePage() function when the page is fully loaded
+    window.addEventListener('load', initializePage);
+
+
         function toggleLine(element) {
             const line = document.querySelector('.line');
             const navItems = document.querySelectorAll('.item');
-
+            
             const itemWidth = element.offsetWidth;
             const itemOffsetLeft = element.offsetLeft;
             const containerOffsetLeft = document.querySelector('.innernav2').offsetLeft; 
@@ -296,22 +289,7 @@
 
             element.classList.add('active');
         }
-        function toggleLine1(element) {
-            const line = document.querySelector('.line1');
-            const navItems = document.querySelectorAll('.item1');
-
-            const itemWidth = element.offsetWidth;
-            const itemOffsetLeft = element.offsetLeft;
-            const containerOffsetLeft = document.querySelector('.prof-nav').offsetLeft; 
-            line.style.width = itemWidth + 'px';
-            line.style.transform = 'translateX(' + (itemOffsetLeft - containerOffsetLeft) + 'px)'; 
-            
-            navItems.forEach(item => {
-                item.classList.remove('active');
-            });
-
-            element.classList.add('active');
-        }
+ 
         const appointmentsSection = document.querySelector('.appointments-2');
         console.log(appointmentsSection);
         window.addEventListener('scroll', function() {

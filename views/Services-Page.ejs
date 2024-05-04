@@ -8,9 +8,11 @@
     <link rel="shortcut icon" href="../images/logo.jpg" type="image/x-icon">
     <title>Our Services</title>
 </head>
-<body style="background-color: #81cdfc;">
+<body style="background-color: #80b8d8;">
     <%- include('./partials/navbar')%></body>
+    <div id="dav">
 
+    </div>
     <div class="l1" id="scrolldown">
         <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="9 -20 32 72">
           <path d="M 20 5 Q 22 0 25 0 T 30 5 L 45 30 Q 45 35 40 35 T 10 35 Q 5 35 5 30 Z"  />
@@ -132,31 +134,31 @@
     <%- include('./partials/Footer')%></body>
 
 
- <script >
+ <script>
  
  // Event listener for services scrolling
  const serviceLinks = document.querySelectorAll('.serviceslist a');
-    console.log('sad');
-
-    serviceLinks.forEach(link => {
-        link.addEventListener('click', function(event) {
-            event.preventDefault();
-
-            const targetId = this.getAttribute('href').substring(1);
-
-            const targetSection = document.getElementById(targetId);
-
-            targetSection.scrollIntoView({ behavior: 'smooth' });
+ 
+ serviceLinks.forEach(link => {
+     link.addEventListener('click', function(event) {
+         event.preventDefault();
+         
+         const targetId = this.getAttribute('href').substring(1);
+         
+         const targetSection = document.getElementById(targetId);
+         
+         targetSection.scrollIntoView({ behavior: 'smooth' });
         });
     });
-
- // Event listener for services scrolling
- const scrolls = document.querySelector('.l1');
+    
+    // Event listener for services scrolling
+    const scrolls = document.querySelector('.l1');
     console.log('sad');
-
-        scrolls.addEventListener('click', function(event) {
-            const targetSection = document.getElementById('nav');
-
+    
+    scrolls.addEventListener('click', function(event) {
+        const targetSection = document.getElementById('dav');
+        console.log(targetSection);
+        
             targetSection.scrollIntoView({ behavior: 'smooth' });
         });        
  </script>

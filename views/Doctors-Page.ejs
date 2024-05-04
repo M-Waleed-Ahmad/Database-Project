@@ -13,6 +13,7 @@
         <section class="sect-1">
             <% doctors.forEach(doctor => { %>
                 <div class="doc">
+                    <img src="../images/profile-default.svg" alt="dp" height="100px" width="100px">
                     <h2><%= doctor.Specialization %></h2>
                     <p><strong>Qualification:</strong> <%= doctor.Qualification %></p>
                     <p><strong>License No:</strong> <%= doctor.LicenseNo %></p>
