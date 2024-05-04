@@ -7,12 +7,12 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    background-color: #81cdfc; 
+    background-color: #80b8d8; 
     padding: 50px 0; 
 }
 
 #S {
-    background-color: #81cdfc; 
+    background-color: #80b8d8; 
     text-align: center;
     font-size: 5.5rem;
 }
@@ -21,7 +21,7 @@
     padding: 20px 40px; 
     text-decoration: none;
     color: #fff; 
-    background-color: #058fe4; 
+    background-color: #1788A6; 
     border-radius: 30px; 
     margin: 10px; 
     transition: background-color 0.3s ease; 
@@ -41,7 +41,7 @@
 /* Section 2 Styling */
 .section2 {
     padding: 50px 0; 
-    background-color: #f2f2f2; 
+    background-color: #b9d6eb; 
 }
 
 .outer {
@@ -92,11 +92,10 @@ p {
 .l1 {
     position: fixed;
     z-index: 2;
-    border: #3789F5;
-    background-color: red;
-    top: 90%;
+    border: #1788A6;
+     top: 90%;
     left: 97.5%;
-    background-color: #3789F5;
+    background-color: #1788A6;
     border-radius: 50%;
     width: 37px;
     height: 37px;

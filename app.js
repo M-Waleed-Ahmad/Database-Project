@@ -28,25 +28,25 @@ const pool=createPool({
     connectionLimit:100
 })
 // Assuming you have a function to execute your query, for example:
-function executeQuery(query) {
-  return new Promise((resolve, reject) => {
-      // Execute your query here
-      // For example:
-      pool.query(query, (err, result) => {
-          if (err) {
-              reject(err); // Reject the promise if there's an error
-          } else {
-              resolve(result); // Resolve the promise with the result
-          }
-      });
-  });
-}
-
+function executeQuery(query, values = []) {
+    return new Promise((resolve, reject) => {
+        // Execute your query here
+        // For example:
+        pool.query(query, values, (err, result) => {
+            if (err) {
+                reject(err); // Reject the promise if there's an error
+            } else {
+                resolve(result); // Resolve the promise with the result
+            }
+        });
+    });
+  }
 // Usage:
 
 
 // Endpoints
 app.get('/', (req, res) => {
+    
     res.render('Cover-Page');
 });
 
@@ -83,16 +83,114 @@ app.get('/SignUp/patient', (req, res) => {
 app.get('/SignUp/doctor', (req, res) => {
   res.render('Doctor-Signup');    
 });
+
+// ///////////////////////////////////////////////////////////////////////////////////
+// Patient Profile pages
+
 app.get('/patient', (req, res) => {
    
-    if (req.cookies.cookiedata.loggedin==true) {
-      res.render('Patient-Profile');
-    } else {
-        
+    if (req.cookies.cookiedata.loggedin==true)
+    {
+      const {id,mail,password}=req.cookies.cookiedata;
+      const section = req.query.section || 1
+      console.log('section:', section);
+      
+      res.render('Patient-Profile'); // Render the template after data retrieval
+      console.log(section);   
+    }
+    else
+    {    
         res.send('login timing expired');
     } 
     
 });
+app.get('/patient:section', (req, res) => {
+    const section = req.params.section;
+    const {id,mail,password}=req.cookies.cookiedata;
+    console.log('ssadection:', section);
+    if (section == '1') {
+        console.log('Profile Page:', section);
+        const sql = `SELECT Users.UserID, Users.PositionID, Users.FirstName, Users.LastName,
+                    Users.Email,Patients.PatientId, Patients.Age, Patients.Weight, Patients.Height
+                    ,Patients.Disease, Patients.Allergies, Patients.DoctorInCharge,
+                    HealthRecords.EHRID, HealthRecords.MedicalHistory, HealthRecords.Treatment, HealthRecords.Status,
+                    EmergencyInfo.EMID, EmergencyInfo.ContactName, EmergencyInfo.ContactPNO,
+                    EmergencyInfo.ContactMail FROM Users LEFT JOIN Patients ON Users.UserID = Patients.PatientId 
+                    LEFT JOIN HealthRecords ON Patients.PatientId = HealthRecords.PatientID LEFT JOIN EmergencyInfo ON Patients.PatientId = EmergencyInfo.PatientID
+                    WHERE Users.Email = ?`
+
+        executeQuery(sql,mail)
+        .then(Patient => {
+            res.json({ section, Patient });
+            console.log('Patient:', Patient);
+        })
+        .catch(error => {
+            console.error('Error executing query:', error);
+        });
+                
+    }
+     else if (section == '2') {
+        sql=`SELECT 
+            A.AppointmentID,
+            A.CaseDescription,
+            A.AppointmentDateTime,
+            UP.FirstName AS PatientFirstName,
+            UP.LastName AS PatientLastName,
+            UD.FirstName AS DoctorFirstName,
+            UD.LastName AS DoctorLastName
+            FROM 
+                Appointments A
+                INNER JOIN Users UP ON A.PatientID = UP.UserID
+                INNER JOIN Users UD ON A.DoctorID = UD.UserID
+            WHERE UP.UserID = ?; `
+        executeQuery(sql,id)
+        .then(Appointments => {
+            res.json({ section, Appointments });
+            console.log('Appointments:', Appointments);
+        })
+        .catch(error => {
+            console.error('Error executing query:', error);
+        });
+    }
+    else if (section == '3') { 
+        console.log('Consultations');
+        sql=`SELECT
+                Distinct DistinctChats.ChatID,
+                CASE
+                    WHEN SenderID = '${id}' THEN Receiver.FirstName
+                    ELSE Sender.FirstName
+                END AS OtherPersonFirstName,
+                CASE
+                    WHEN SenderID = '${id}' THEN Receiver.LastName
+                    ELSE Sender.LastName
+                END AS OtherPersonLastName
+            FROM
+                (SELECT DISTINCT ChatID FROM Messages WHERE SenderID = '${id}' OR ReceiverID = '${id}') AS DistinctChats
+                INNER JOIN Messages ON DistinctChats.ChatID = Messages.ChatID
+                INNER JOIN Users Sender ON Messages.SenderID = Sender.UserID
+                INNER JOIN Users Receiver ON Messages.ReceiverID = Receiver.UserID; `
+        executeQuery(sql,id)
+        .then(Messages=>{
+            console.log('Chats',Messages);
+            res.json({ section,Messages}); // Render the template after data retrieval
+        })
+        .catch(error=>{
+            console.error('Error executing query:',error);
+        });
+    }
+        else if (section == '4') {
+        console.log('Prescriptions');
+
+        res.json({ section }); // Render the template after data retrieval
+    }
+    else if (section == '5') {
+        console.log('Support Community');
+
+        res.json({ section }); // Render the template after data retrieval
+    }
+ 
+});
+
 app.get('/doctor', (req, res) => {
     res.render('Doctor-Profile');
     
@@ -125,11 +223,9 @@ app.post('/contact',(req,res)=>{
 // Signup khapat
 let form_data;      //Abhi global variables use kr raha but aage sessions explore krne hain 
                     // cuz global variables cause errors when working on large scale 
-let userid;         //asynchronously
 
 app.post('/Signup', (req, res) => {
     const { role } = req.body;
-    userid=uuidv4();
     form_data=req.body;
     // console.log(form_data);
     
@@ -166,47 +262,47 @@ app.post('/Signup', (req, res) => {
         }
     })
   });
+app.post('/signup/patient', (req, res) => {
+    userid = uuidv4();
+    const { firstname, lastname, email, password, gender } = form_data;
+    const { age, weight, height, disease, Allergies, medicalHistory, treatment } = req.body;
+    const user_query = 'INSERT INTO Users (UserID, PositionID, FirstName, LastName, Email, Password, Gender) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const values1 = [userid, 3, firstname, lastname, email, password, gender];
+    const patient_query = 'INSERT INTO Patients (PatientID, Age, Weight, Height, Disease, Allergies) VALUES (?, ?, ?, ?, ?, ?)';
+    const values2 = [userid, age, weight, height, disease, Allergies];
+    const med_query = 'INSERT INTO HealthRecords (EHRID, PatientID, MedicalHistory, Treatment, Status) VALUES (?, ?, ?, ?, ?)';
 
-app.post('/signup/patient',(req,res)=>{
-    patientd=uuidv4();
-    const {firstname,lastname,email,password,gender}=form_data;
-    // console.log(req.body);
-    const { age,weight,height,disease, Allergies, medicalHistory,treatment} = req.body;
-    const user_query='INSERT INTO Users (UserID, PositionID, FirstName, LastName, Email, Password, Gender)VALUES (?,?,?,?,?,?,?)';
-    const values1=[userid,3,firstname,lastname,email,password,gender];
-    const patient_query='INSERT INTO Patients (PatientID, UserID, Age, Weight, Height,Disease,Allergies)VALUES (?,?,?,?,?,?,?)';    
-    const values2=[patientd,userid,age,weight,height,disease,Allergies];
-    const med_query='Insert into healthrecords(ehrid,patientid,MedicalHistory,Treatment,status)values(?,?,?,?,?)';
-    
-    pool.query(user_query,values1,(err,SUC)=>{
+    pool.query(user_query, values1, (err, SUC) => {
         if (err) {
-            console.log('Error:',err);
+            console.log('Error:', err);
         } else {
-            console.log('Data inserted successfully');
-         }
-    })
-    pool.query(patient_query,values2,(err,SUC)=>{
-        if (err) {
-            console.log('Error:',err);
-        } else {
-            console.log('Data inserted successfully');
+            console.log('User data inserted successfully');
+            pool.query(patient_query, values2, (err, SUC) => {
+                if (err) {
+                    console.log('Error:', err);
+                } else {
+                    console.log('Patient data inserted successfully');
+                    for (let int = 0; int < medicalHistory.length; int++) { // Removed -1 from the loop condition
+                        const values3 = [uuidv4(), userid, medicalHistory[int], treatment[int], 'past'];
+                        console.log('int=', medicalHistory.length);
+                        pool.query(med_query, values3, (err, SUC) => {
+                            if (err) {
+                                console.log('Error:', err);
+                            } else {
+                                console.log('Health record inserted successfully');
+                            }
+                        });
+                    }
+                }
+            });
         }
-    })
-    
-    for (let int = 0; int < medicalHistory.length-1; int++) {
-        const values3=[uuidv4(),patientd,medicalHistory[int],treatment[int],'past'];
-        console.log('int=',medicalHistory.length);
-        pool.query(med_query,values3,(err,SUC)=>{
-            if (err) {
-                console.log('Error:',err);
-            } else {
-                console.log('Data inserted successfully');
-            }
-        })
-        
-    }
+    });
+
+
+
     res.sendStatus(200);
-})
+});
+
 app.post('/signup/doctor',(req,res)=>{
     doctorid=uuidv4();
      const {firstname,lastname,email,password,gender}=form_data;
@@ -239,7 +335,7 @@ app.post('/login',(req,res)=>{
     check=false;
     let username = ''; // Initialize username variable
     let positionid = ''; // Initialize positionid variable
-    pool.query('select firstName,email,password,positionid from users',(err,result)=>{
+    pool.query('select userid,email,password,positionid from users',(err,result)=>{
         if (err) {
             console.log('Error:',err);
         } else {
@@ -247,7 +343,7 @@ app.post('/login',(req,res)=>{
                 if (element.email===email && element.password===password) {
                     console.log('Login Successfull'); 
                     check=true;
-                    username=element.firstname;
+                    username=element.userid;
                     positionid=element.positionid;
                 }
             });
@@ -255,6 +351,8 @@ app.post('/login',(req,res)=>{
                 console.log('Login Unuccessfull');    
             }
             else{
+                console.log('Login s',username,positionid); 
+
                 const cookieData = {
                     id: username,
                     mail: email,
@@ -262,6 +360,7 @@ app.post('/login',(req,res)=>{
                 };
                 res.cookie('cookiedata', cookieData, { maxAge: 900000, httpOnly: true });
                 if (positionid===3) {
+                console.log('Login s'); 
                     res.redirect('/patient');
                 } 
                 else {
