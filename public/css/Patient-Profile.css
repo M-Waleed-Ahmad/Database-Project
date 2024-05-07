@@ -350,12 +350,23 @@ main {
 
 .chat-list {
     padding: 10px;
+    display: block;
     max-height: 400px;
     overflow-y: auto;
 }
+.bt{
+    display: block;
+    border: none;
+    background-color: transparent;
+    margin-left: 56px;
+}
+.a-t{
+    text-decoration: none;
+    color: black;
+}
 .chat-box{
     background-color: #fff;
-    width: 60%;
+    width: 100%;
     padding: 20px;
     margin: 20px;
     border-radius: 10px;
@@ -369,6 +380,8 @@ main {
 }
 #conversation {
     border: 1px solid #fff;
+    display: flex;
+    flex-direction: column;
     padding: 10px;
     border-radius: 10px;
     background-color: #fff;
@@ -380,6 +393,105 @@ main {
 #conversation h2{
     text-align: center;
 }
+/* Styles for the chat container */
+
+
+/* Styles for messages */
+.messages {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column; /* Reverse the order of messages */
+
+
+}
+
+/* Styles for message input */
+.input-container {
+    display: flex;
+
+}
+
+#message-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+}
+
+#send-button {
+    padding: 8px 16px;
+    margin-left: 8px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#send-button:hover {
+    background-color: #0056b3;
+}
+/* Styles for chat messages */
+.message {
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 20px;
+    max-width: 80%;
+    word-wrap: break-word;
+    background-color: red;
+    position: relative;
+}
+
+/* Styles for sender's messages */
+.message.sent {
+    background-color: #007bff;
+    color: #fff;
+    align-self: flex-end;
+}
+
+/* Styles for receiver's messages */
+.message.received {
+    background-color: #f2f2f2;
+    color: #333;
+    align-self: flex-start;
+}
+
+/* Styles for message timestamp */
+.timestamp {
+    font-size: 0.8em;
+    color: #777;
+}
+
+/* Styles to make messages appear as bubbles */
+.message.sent::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: -10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 0 0 10px;
+    border-color: transparent transparent transparent #007bff;
+}
+
+.message.received::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 10px 0 0;
+    border-color: transparent #f2f2f2 transparent transparent;
+}
+
+
 
 /* //////////////////////////////////////////////////////////////////////////////////////// */
 /* Prescriptions  */
