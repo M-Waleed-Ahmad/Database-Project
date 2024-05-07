@@ -46,7 +46,13 @@ function executeQuery(query, values = []) {
 
 // Endpoints
 app.get('/', (req, res) => {
-    
+    UserData={
+        userid:' ',
+        loggedin:false,
+        username:' ',
+        mail:' ',
+    }
+    res.cookie('UserData',UserData,{httpOnly:true});
     res.render('Cover-Page');
 });
 
@@ -88,16 +94,13 @@ app.get('/SignUp/doctor', (req, res) => {
 // Patient Profile pages
 
 app.get('/patient', (req, res) => {
-   
-    if (req.cookies.cookiedata.loggedin==true)
+    
+    if (req.cookies.UserData.loggedin==true)
     {
-      const {id,mail,password}=req.cookies.cookiedata;
-      const section = req.query.section || 1
-      console.log('section:', section);
-      
+      const {id,mail,password}=req.cookies.UserData;
+ 
       res.render('Patient-Profile'); // Render the template after data retrieval
-      console.log(section);   
-    }
+     }
     else
     {    
         res.send('login timing expired');
@@ -106,8 +109,9 @@ app.get('/patient', (req, res) => {
 });
 app.get('/patient:section', (req, res) => {
     const section = req.params.section;
-    const {id,mail,password}=req.cookies.cookiedata;
-    console.log('ssadection:', section);
+    const {userid,mail}=req.cookies.UserData;
+    console.log('sectsdsion:', req.params);
+
     if (section == '1') {
         console.log('Profile Page:', section);
         const sql = `SELECT Users.UserID, Users.PositionID, Users.FirstName, Users.LastName,
@@ -143,7 +147,7 @@ app.get('/patient:section', (req, res) => {
                 INNER JOIN Users UP ON A.PatientID = UP.UserID
                 INNER JOIN Users UD ON A.DoctorID = UD.UserID
             WHERE UP.UserID = ?; `
-        executeQuery(sql,id)
+        executeQuery(sql,userid)
         .then(Appointments => {
             res.json({ section, Appointments });
             console.log('Appointments:', Appointments);
@@ -154,22 +158,28 @@ app.get('/patient:section', (req, res) => {
     }
     else if (section == '3') { 
         console.log('Consultations');
-        sql=`SELECT
-                Distinct DistinctChats.ChatID,
+        sql=`SELECT DISTINCT
+        ChatID,
+        OtherUser.FirstName AS OtherPersonFirstName,
+        OtherUser.LastName AS OtherPersonLastName
+    FROM
+        (
+            SELECT
+                ChatID,
                 CASE
-                    WHEN SenderID = '${id}' THEN Receiver.FirstName
-                    ELSE Sender.FirstName
-                END AS OtherPersonFirstName,
-                CASE
-                    WHEN SenderID = '${id}' THEN Receiver.LastName
-                    ELSE Sender.LastName
-                END AS OtherPersonLastName
+                    WHEN SenderID = '${userid}' THEN ReceiverID
+                    ELSE SenderID
+                END AS OtherUserID
             FROM
-                (SELECT DISTINCT ChatID FROM Messages WHERE SenderID = '${id}' OR ReceiverID = '${id}') AS DistinctChats
-                INNER JOIN Messages ON DistinctChats.ChatID = Messages.ChatID
-                INNER JOIN Users Sender ON Messages.SenderID = Sender.UserID
-                INNER JOIN Users Receiver ON Messages.ReceiverID = Receiver.UserID; `
-        executeQuery(sql,id)
+                Messages
+            WHERE
+                SenderID = '${userid}'
+                OR ReceiverID = '${userid}'
+        ) AS Interactions
+    INNER JOIN Users AS OtherUser ON OtherUser.UserID = Interactions.OtherUserID
+    WHERE
+        OtherUserID <> '${userid}';`
+        executeQuery(sql)
         .then(Messages=>{
             console.log('Chats',Messages);
             res.json({ section,Messages}); // Render the template after data retrieval
@@ -190,6 +200,48 @@ app.get('/patient:section', (req, res) => {
     }
  
 });
+app.get('/patient/chat',(req,res)=>{
+    const section = req.query.section 
+    const chat = req.query.ChatId 
+    const lname = req.query.lname 
+    sql=`SELECT MessageID, SenderID, ReceiverID, Message, Timestamp
+        FROM Messages
+        WHERE ChatID = '${chat}'
+        ORDER BY Timestamp ASC;`
+        executeQuery(sql)
+        .then(Chat=>{
+            uid=req.cookies.UserData.userid;
+            console.log('Chat=',Chat,'USERID',uid);
+            res.json({ section, Chat , uid});
+        })
+        .catch(err=>{
+            console.error('Error executing query:', err);
+
+        })
+    console.log('section:', req.query.ChatId);
+    
+});
+app.post('/patient/chat/send',(req,res)=>{
+
+    const chat=req.body.importantInfo.chatId;
+    const sender=req.body.importantInfo.sender;
+    const reciever=req.body.importantInfo.receiver;
+    console.log('section:', req.body)
+    const {message}=req.body;
+    const time=req.body.Timestamp;
+    const sql='INSERT INTO Messages (MessageID, ChatID, SenderID, ReceiverID, Message, Timestamp) VALUES (?,?,?,?,?,?)';
+    values=[uuidv4(),chat,sender,reciever,message,time];
+    executeQuery(sql,values)
+    .then(suc=>{
+        console.log('Message sent successfully');
+        res.sendStatus(200);
+    })
+    .catch(err=>{
+        console.error('Error executing query:', err);
+    }) 
+    console.log('values',values);
+ });
+
 
 app.get('/doctor', (req, res) => {
     res.render('Doctor-Profile');
@@ -343,22 +395,24 @@ app.post('/login',(req,res)=>{
                 if (element.email===email && element.password===password) {
                     console.log('Login Successfull'); 
                     check=true;
+                    id=element.userid;
                     username=element.userid;
                     positionid=element.positionid;
                 }
             });
             if (check==false) {
-                console.log('Login Unuccessfull');    
+                console.log('Login Unsuccessfull');    
             }
             else{
                 console.log('Login s',username,positionid); 
 
-                const cookieData = {
-                    id: username,
-                    mail: email,
-                    loggedin: true
-                };
-                res.cookie('cookiedata', cookieData, { maxAge: 900000, httpOnly: true });
+                UserData={
+                    userid:id,
+                    loggedin:true,
+                    username:username,
+                    mail:email,
+                }
+                res.cookie('UserData', UserData, { httpOnly: true });
                 if (positionid===3) {
                 console.log('Login s'); 
                     res.redirect('/patient');
