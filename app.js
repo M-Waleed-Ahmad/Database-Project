@@ -6,7 +6,25 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const {createPool}= require('mysql2');
 const { v4: uuidv4 } = require('uuid');
-const port = 80;
+  const port = 80;
+    
+function formatDate(dateString) {
+    // Parse the input date string
+    const date = new Date(dateString);
+
+    // Extract date components
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    // Format the date string in the desired format
+    const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+    return formattedDate;
+}
 
 
 
@@ -69,17 +87,49 @@ app.get('/services', (req, res) => {
 });
 
 app.get('/doctors', async(req, res) => {
-  executeQuery('SELECT * FROM doctors')
-  .then(doctors => {
-    console.log(doctors);
-    res.render('Doctors-Page', { doctors }); // Render the template after data retrieval
-
-  })
-  .catch(error => {
-      console.error('Error executing query:', error);
-  });
+    
+   executeQuery(`SELECT COUNT(*) AS ApprovedDoctorsCount
+    FROM doctors
+    WHERE AdminsApproval = 1; -- Assuming 1 indicates approval and 0 indicates not approved`)
+    .then(DoctorsCount => {
+        console.log('DoctorsCount:', DoctorsCount);
+        count=DoctorsCount
+    })
+    .catch(error => {
+        console.log('Error:',error)
+    });
+    executeQuery('SELECT * FROM doctors WHERE AdminsApproval = 1;')
+     .then(doctors => {
+        console.log(doctors);
+        const userinfo=req.cookies.UserData;
+        res.render('Doctors-Page', { doctors,userinfo,count}); // Render the template after data retrieval
+    })
+    .catch(error => {
+        console.error('Error executing query:', error);
+    });
 });
-
+app.post('/doctors/consult', (req, res) => {
+    console.log('Consult:',req.body);
+    const sender=req.cookies.UserData.userid;
+    const reciever=req.body.docToConsult.DoctorId;
+    const chatid=uuidv4();
+    const message=req.body.concern; 
+    sql='INSERT INTO Messages (MessageID, ChatID, SenderID, ReceiverID, Message, Timestamp) VALUES (?,?,?,?,?,?)';
+    const currentDate =  Date.now();
+    
+    // Format the date and time string
+    const formattedDate = formatDate(currentDate);
+    const values=[uuidv4(),chatid,sender,reciever,message,formattedDate];
+    console.log('Values:',values);
+    executeQuery(sql,values)
+    .then(suc=>{
+        console.log('Message sent successfully');
+        res.sendStatus(200);
+    })
+    .catch(err=>{
+        console.error('Error executing query:',err);
+    });
+});
 app.get('/SignUp', (req, res) => {
   res.render('Signup-Page');
 });
@@ -91,7 +141,7 @@ app.get('/SignUp/doctor', (req, res) => {
 });
 
 // ///////////////////////////////////////////////////////////////////////////////////
-// Patient Profile pages
+// Patient Profile page urls
 
 app.get('/patient', (req, res) => {
     

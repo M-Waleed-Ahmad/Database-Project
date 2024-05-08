@@ -495,7 +495,7 @@ main {
 
 /* //////////////////////////////////////////////////////////////////////////////////////// */
 /* Prescriptions  */
-.div4{
+#div4{
     display: none;
     width: 100%;
     transition: opacity 0.5s ease; /* Add transition property */
@@ -542,7 +542,7 @@ main {
 /* /////////////////////////////////////////////////////////////////////////// */
 
 /* Support Community */
-.div5{
+#div5{
     display: none;
     height: 467px;
     width: 100%;

@@ -203,10 +203,11 @@
                         document.getElementById(`div${int}`).style.display = 'none';
 
                     }
-                    console.log('ada');
                     sectionElement.innerHTML=`
                     <header>
-                    <h1>Consultations</h1>
+                    <h1>To Consult with a new doctor\nkindly visit our doctors page and connect with
+                        your desired doctor
+                    </h1>
                     </header>
                     <main>
                         <div  class="chat">
@@ -240,11 +241,76 @@
                 
                     break;
                 case '4':
-                    // Update Prescriptions section with data
-                    break;
+                sectionElement.style.display = 'block';
+                    for (let int = 1; int <= 5; int++) {
+                        if (int==4) {
+                        continue;   
+                        }
+                        document.getElementById(`div${int}`).style.display = 'none';
+                    }
+                    sectionElement.innerHTML=`
+                    <header>
+                        <h1>Prescriptions</h1>
+                    </header>
+                    <main>
+                        <div class="prescription-list">
+                            <h2>Your Prescriptions</h2>
+                            <ul>
+                                <!-- Prescriptions will be dynamically added here -->
+                            </ul>
+                        </div>
+                        <div class="prescription-details">
+                            <h2>Prescription Details</h2>
+                            <form id="prescription-form">
+                                <label for="doctor">Doctor:</label>
+                                <input type="text" id="doctor" name="doctor" required>
+                                <label for="medication">Medication:</label>
+                                <input type="text" id="medication" name="medication" required>
+                                <label for="dosage">Dosage:</label>
+                                <input type="text" id="dosage" name="dosage" required>
+                                <label for="frequency">Frequency:</label>
+                                <input type="text" id="frequency" name="frequency" required>
+                                <label for="remaining">Remaining Quantity:</label>
+                                <input type="number" id="remaining" name="remaining" required>
+                                <label for="next-refill">Next Refill Date:</label>
+                                <input type="date" id="next-refill" name="next-refill" required>
+                                <button type="submit">Add Prescription</button>
+                            </form>
+                        </div>
+                    </main>`;
+                break;
                 case '5':
-                    // Update Support Community section with data
-                    break;
+                sectionElement.style.display = 'block';
+                    for (let int = 1; int <= 5; int++) {
+                        if (int==5) {
+                        continue;   
+                        }
+                        document.getElementById(`div${int}`).style.display = 'none';
+                    }
+                sectionElement.innerHTML=`
+                    <main id="supportf">
+                        <section class="ask-question">
+                            <h2>Ask a Question</h2>
+                            <form action="#">
+                                <textarea name="question" id="question" placeholder="Type your question here..." required></textarea>
+                                <button type="submit">Submit</button>
+                            </form>
+                        </section>
+                    
+                        <section class="recent-questions">
+                            <h2>Recent Questions</h2>
+                            <ul>
+                                <li>
+                                    <h3>Question Title</h3>
+                                    <p>Posted by: User123</p>
+                                    <p>Date: January 1, 2024</p>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac nulla sed quam vehicula...</p>
+                                    <a href="#">View Details</a>
+                                </li>
+                            </ul>
+                        </section>
+                    </main>`
+                break;
                 default:
                     // Handle invalid section
                     break;
