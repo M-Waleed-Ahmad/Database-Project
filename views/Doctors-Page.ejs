@@ -8,27 +8,82 @@
         <link rel="shortcut icon" href="../images/logo.jpg" type="image/x-icon">
         <title>Our Doctors</title>
     </head>
-    <body>
+    <body id="bod">
         <%- include('./partials/navbar')%></body>
-        <section class="sect-1">
-            <% doctors.forEach(doctor => { %>
-                <div class="doc">
+        <div class="sect-1">
+            <div class="consult">
+                <label for="concern">Concern:</label><br>
+                <textarea id="concern" name="concern" class="PP" rows="4" required></textarea><br><br>
+                <input id="sub-btn" class="btn" type="submit" value="Submit">
+            </div>
+            <% doctors.forEach((doctor,index) => { %>
+                <div id="doctor<%= index + 1 %>" class="doc">
                     <img src="../images/profile-default.svg" alt="dp" height="100px" width="100px">
                     <h2><%= doctor.Specialization %></h2>
                     <p><strong>Qualification:</strong> <%= doctor.Qualification %></p>
                     <p><strong>License No:</strong> <%= doctor.LicenseNo %></p>
                     <p><strong>Institute:</strong> <%= doctor.Institute %></p>
                     <p><strong>Experience:</strong> <%= doctor.Experience %> years</p>
-                    <button class="btn">Consult</button>
-                    <!-- Add more details as needed -->
+                    <button class="btns" onclick="consultDoc(`<%= index %>`);">Consult</button>
                 </div>
             <% }); %>
-         </section>
+            </div>
          <%- include('./partials/Footer')%></body>
 
-    <script >
-    const consult=document.getElementById()
+    <script>
+        const userinfo =  JSON.parse('<%- JSON.stringify(userinfo) %>');
+        const doctors =  JSON.parse('<%- JSON.stringify(doctors) %>');
+        const count =  JSON.parse('<%- JSON.stringify(count[0].ApprovedDoctorsCount) %>');
 
+        function consultDoc(index) {
+            console.log(index);
+            const docToConsult = doctors[index];
+            console.log('Doctor:',docToConsult);
+                console.log('Consultation Request Sent', userinfo.loggedin);
+                if (userinfo.loggedin===true) {
+                    document.querySelector('.consult').style.display = 'block';
+                    document.getElementById('sub-btn').addEventListener('click', () => consultReq(docToConsult));
+                    console.log('Consultation Request Sent');
+                } else {
+                    console.log('Please Login to Consult');
+                }
+           
+        }
+
+        function consultReq(docToConsult) {
+            const concern = document.querySelector('.PP').value;
+
+            console.log('Consultation Request Sent', userinfo);
+            console.log('count:',concern);
+            fetch('/doctors/consult', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ concern, userinfo,docToConsult}),
+            })
+                .then((response) => {
+            if (response.status === 200) {
+                console.log('Consultation Request Sent successfully');
+                document.getElementById('sub-btn').removeEventListener('click', () => consultReq(docToConsult));
+                document.querySelector('.consult').style.display = 'none';
+                alert('Consultation Request Sent', 'Please wait for the Doctor to respond');
+            } else {
+                console.error('Failed to send consultation request');
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+            const submit = document.querySelector('.btn');
+            submit.removeEventListener('click', consultReq);
+        }
+
+        const doc = document.querySelector('.consult');
+        document.getElementById('bod').addEventListener('click', () => {
+            if (!event.target.closest('.btns') &&!event.target.closest('.consult')) {
+                doc.style.display = 'none';
+    }        }); 
     </script>
     </body>
 

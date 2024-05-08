@@ -48,7 +48,7 @@ body {
     font-size: 16px;
     margin-bottom: 5px;
 }
-.btn {
+.btns,.btn {
     margin: 10px;
     padding: 10px 20px;
     background-color: #007bff;
@@ -62,10 +62,27 @@ body {
 .btn:hover {
     background-color: #0056b3;
 }
-footer {
-    background-color: #007bff;
-    color: #fff;
-    padding: 20px 0;
+.consult {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
     text-align: center;
-    margin-top: 20px;
+    padding: 20px;
+    z-index: 2;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    max-width: 400px; /* Set a maximum width to prevent it from becoming too wide */
+    width: 80%; /* Adjust width as needed */
+    margin: 0 auto; /* Center horizontally */
+}
+.consult h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.PP{
+    width: 368px;
+    height: 131px;
 }
