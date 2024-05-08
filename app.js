@@ -238,15 +238,50 @@ app.get('/patient:section', (req, res) => {
             console.error('Error executing query:',error);
         });
     }
-        else if (section == '4') {
-        console.log('Prescriptions');
+    else if (section == '4') {
+     sq=`Select * from Prescriptions;`
+     executeQuery(sq)
+     .then(Prescriptions=>{
+        sql=`
+        select U.FirstName,U.LastName,d.DoctorId,d.Specialization,d.Qualification 
+        from 
+        doctors d
+        Inner Join Users U on d.DoctorId=U.UserID;`;
+        executeQuery(sql)
+        .then(Docs=>{
+            console.log('Succeed:',Docs);
+            sql2=`select Disease from Patients
+            where PatientID='${req.cookies.UserData.userid}'`
+            executeQuery(sql2)
+            .then(Diseases=>{
+                console.log("Prescription,",Prescriptions);
+                res.json({Docs,Diseases,Prescriptions});
+            })
+            .catch(err=>{
+                console.log('Error:',err);
+            })
+        })
+        .catch(err=>{
+            console.log('Error:',err);
+        })
+     })
+     .catch(err=>{
+        console.log("Err:",err);
+     })
+    console.log('Prescriptions');
 
-        res.json({ section }); // Render the template after data retrieval
     }
     else if (section == '5') {
         console.log('Support Community');
-
-        res.json({ section }); // Render the template after data retrieval
+        sql=`Select * from Questions;`
+        executeQuery(sql)
+        .then(questions=>{
+            console.log("Questions:",questions);
+            res.json({ questions }); // Render the template after data retrieval    
+        })
+        .catch(err=>{
+            console.log('ERR:',err);
+        })
     }
  
 });
@@ -292,6 +327,65 @@ app.post('/patient/chat/send',(req,res)=>{
     console.log('values',values);
  });
 
+app.post('/patient/addPrescription',(req,res)=>{
+    console.log('Hi',req.body);
+    const {doctor,disease,medication,dosage,frequency,remaining}=req.body;
+    addpr=`INSERT INTO Prescriptions (PrescriptionID, Disease, DoctorID,PatientID, Treatments, Dosage, frequency, RemainingQuantity)
+    VALUES(?,?,?,?,?,?,?,?)`
+    value=[uuidv4(),disease,doctor,req.cookies.UserData.userid,medication,dosage,frequency,remaining]
+    executeQuery(addpr,value)
+    .then(suc=>{        
+        res.sendStatus(200);
+    })
+    .catch(err=>{
+        console.log('ERR:',err);
+    })
+    
+});
+app.get('/patient/qna',(req,res)=>{
+    console.log('q',req.query.qid);
+    sql=`Select * from answers where qid='${req.query.qid}'`
+    executeQuery(sql)
+    .then(answers=>{
+        executeQuery(`Select question_statement from questions where qid='${req.query.qid}'`)
+        .then(question=>{
+            console.log(question[0],"s",answers);
+            res.render('Qna-Page',{question,answers});
+
+        })
+        .catch(err=>{
+            console.log('ERR:',err);
+        })
+    })
+    .catch(err=>{
+        console.log('ERR:',err);
+    })
+});
+app.post('/patient/qna',(req,res)=>{
+    
+    sql=`INSERT INTO Answers (answerid, patientid, qid, answer_statement) VALUES(?,?,?,?)`
+    value=[uuidv4(),req.cookies.UserData.userid,req.query.qid,req.body.answer];
+    console.log('rq',value);
+    executeQuery(sql,value)
+    .then(r=>{
+        res.sendStatus(200);
+    })
+    .catch(err=>{
+        console.log('ERR:',err);
+    })
+})
+app.post('/patient/ask',(req,res)=>{
+    sql=`insert into Questions(qid,patientid,question_statement) Values(?,?,?)`
+    values=[uuidv4(),req.cookies.UserData.userid,req.body.question];
+    console.log('req',values);
+    executeQuery(sql,values)
+    .then(suc=>{
+        res.redirect('/patient');
+    })
+    .catch(err=>{
+        console.log("ERR:",err);
+    })
+})
 
 app.get('/doctor', (req, res) => {
     res.render('Doctor-Profile');
@@ -406,14 +500,14 @@ app.post('/signup/patient', (req, res) => {
 });
 
 app.post('/signup/doctor',(req,res)=>{
-    doctorid=uuidv4();
+    userid=uuidv4();
      const {firstname,lastname,email,password,gender}=form_data;
      console.log(req.body);
-    const { LicenseNo,Country,Experience,Qualification, institution, languages,Specialization} = req.body;
+    const { LicenseNo,Experience,Qualification, institution, languages,Specialization} = req.body;
     const user_query='INSERT INTO Users (UserID, PositionID, FirstName, LastName, Email, Password, Gender)VALUES (?,?,?,?,?,?,?)';
-    const values1=[userid,3,firstname,lastname,email,password,gender];
-    const doctor_query='INSERT INTO Doctors (DoctorID, UserID, Specialization, Qualification, LicenseNo,Institute,Experience,Language)VALUES(?,?,?,?,?,?,?,?)';    
-    const values2=[doctorid,userid,Specialization,Qualification,LicenseNo,institution, Experience, languages];
+    const values1=[userid,2,firstname,lastname,email,password,gender];
+    const doctor_query='INSERT INTO Doctors (DoctorID, Specialization, Qualification, LicenseNo,Institute,Experience,Language)VALUES(?,?,?,?,?,?,?)';    
+    const values2=[userid,Specialization,Qualification,LicenseNo,institution, Experience, languages];
     pool.query(user_query,values1,(err,SUC)=>{
         if (err) {
             console.log('Error:',err);

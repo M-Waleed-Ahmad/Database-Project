@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/Qna.css">
+    <link rel="shortcut icon" href="../images/logo.jpg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Bhai|Bree+Serif&display=swap" rel="stylesheet">
+
+    <title>Q&A Page</title>
+    <!-- Add your CSS stylesheets here -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Question & Answer</h1>
+    </header>
+    <main>
+        <section class="question">
+            <h2>Question</h2>
+            <p><strong>Q.</strong><%= question[0].question_statement %></p>
+        </section>
+        <section class="answers">
+            <h2>Answers</h2>
+            <% answers.forEach((answer) => { %>
+               <div class="answer">
+                <p><strong>Username:</strong> <%= answer.patientid %></p>
+                <p><strong>Answer:</strong> <%= answer.answer_statement %></p>
+               </div>
+            <%})%>
+        </section>
+        <section class="ask-question">
+            <h2>Answer Question</h2>
+            <form action="" method="post">
+                <textarea name="answer" id="answer" placeholder="Type your question here..." required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+    
+    </main>
+ 
+</html>

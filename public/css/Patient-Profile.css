@@ -502,14 +502,22 @@ main {
 
 }
 
-.prescription-list,
 .prescription-details {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     flex: 1;
+    
     margin-right: 20px;
+}
+.prescription{
+    background-color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .prescription-details form {
@@ -548,9 +556,9 @@ main {
     width: 100%;
 
 }
-#support {
+#supportf {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     padding: 20px;
 }
 .ask-question textarea {
@@ -577,8 +585,7 @@ main {
 }
 
 .recent-questions li {
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
+     border: 1px solid #ddd;
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
