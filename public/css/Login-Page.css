@@ -1,23 +1,24 @@
-* {
+*{
     margin: 0%;
     padding: 0%;
 }
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #B3E5FC;
+    background-color: #80b8d8;
     margin: 0;
     padding: 0;
 }
 
 .container {
-    max-width: 500px;
+    max-width: 400px;
     margin: 100px auto;
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     background-color: #E0F2FE;
+
 }
 
 h1 {
@@ -27,6 +28,7 @@ h1 {
 
 .form-group {
     margin-bottom: 20px;
+    margin-right: 20px;
 }
 
 label {
@@ -37,16 +39,12 @@ label {
 
 input[type="text"],
 input[type="email"],
-input[type="password"],
-select,
-textarea,
-input[type="number"] {
+input[type="password"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
-    margin-bottom: 10px;
 }
 
 button[type="submit"] {
@@ -74,27 +72,22 @@ a {
 }
 
 
-.name-group {
+/* Footer Stylings */
+footer{
+    background: black;
+    display:block;
+    color: white;
+    padding: 9px 20px;
+}
+.center{
+    text-align: center;
+}
+.links{
     display: flex;
+    margin: 1%;
+    justify-content: center;
 }
-
-.half {
-    flex: 1;
-    margin-right: 10px;
+h1{
+    text-align: center;
 }
-
-.half:last-child {
-    margin-right: 20px;
-    margin-left: 50px;
-}
-
-.input_len_e{
- margin-right: 20px;
-
-}
-
-.input_len_Qual_and_lang{
-    margin-right: 30px
-}
-
 

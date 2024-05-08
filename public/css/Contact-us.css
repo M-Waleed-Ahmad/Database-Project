@@ -1,0 +1,68 @@
+*{
+    margin: 0%;
+    padding: 0%;
+}
+/* Contact Section */
+#contact{
+    position: relative;
+}
+#contact::before{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 2;
+    background-color: #b9d6eb;
+}
+#contact-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 34px;
+}
+
+#contact-box input, 
+#contact-box textarea{
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 9px;
+    font-size: 1.1rem;
+} 
+
+#contact-box form{
+    width: 40%;
+}
+
+#contact-box label{
+   font-size: 1.3rem;
+
+}
+
+
+#submit{
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+
+.h-primary{
+    font-size: 3.8rem;
+    padding: 12px;
+    color: black;
+}
+
+.h-secondary{
+    font-size: 2.3rem;
+    padding: 12px;
+}

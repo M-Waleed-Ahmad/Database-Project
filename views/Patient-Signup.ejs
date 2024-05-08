@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="../css/patientinfo.css">
-    <link rel="shortcut icon" href="../images/logo.jfif" type="image/x-icon">
+    <link rel="stylesheet" href="../css/Patient-Signup.css">
+    <link rel="stylesheet" href="../css/Components.css">
+    <link rel="shortcut icon" href="../images/logo.jpg" type="image/x-icon">
 </head>
 <body>
     <div class="container">
@@ -64,29 +65,46 @@
                 </div>
                    
             </div>
-
-            <div class="form-group">
-                <div class="input_len_e">
-                    <label for="medicalHistory">Medical History:</label>
-                    <textarea id="medicalHistory" name="medicalHistory" rows="4" required></textarea>
-
-                </div>
-                
-            </div>
-            <div class="form-group">
+            <div class="form-group" id="disease">
                 <div class="input_len_e">
                     <label for="disease">Disease:</label>
                     <input type="text" id="disease" name="disease" required>
                 </div>
-                
             </div>
-
-            
+            <div class="form-group" id="medical-history-fields">
+                <div class="input_len_e">
+                    <label for="medicalHistory">Medical History 1:</label>
+                    <textarea id="medicalHistory1" name="medicalHistory" rows="4" required></textarea>
+                    <label for="treatment1">Treatment:</label>
+                    <input type="text" id="treatment1" name="treatment" required>
+                </div>
+            </div>
+            <button type="button" id="waleed" class="add">Add More</button>
          <br>
             
             <button type="submit">Sign Up</button>
         </form>
         <p>Already have an account? <a href="login.html">Log in</a></p>
     </div>
+    <%- include('./partials/Footer')%></body>
+
+    <script >
+        let medicalHistoryCount = 1;
+        const as=document.getElementById('waleed');
+        as.addEventListener('click',()=>{
+            medicalHistoryCount++;
+            const container = document.getElementById('medical-history-fields');
+            const newField = document.createElement('div');
+            newField.innerHTML = `
+                <div class="input_len_e">
+                    <label for="medicalHistory">Medical History ${medicalHistoryCount}:</label>
+                    <textarea id="medicalHistory${medicalHistoryCount}" name="medicalHistory" rows="4" required></textarea>
+                    <label for="treatment${medicalHistoryCount}">Treatment:</label>
+                    <input type="text" id="treatment${medicalHistoryCount}" name="treatment" required>
+                </div>
+            `;
+            container.appendChild(newField);
+        }) 
+    </script>
 </body>
 </html>

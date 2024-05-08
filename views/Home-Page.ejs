@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="../css/Home-Page.css">
+        <link rel="stylesheet" href="../css/Components.css">
+        <link rel="icon" href="../images/logo.jpg">
+        <link href="https://fonts.googleapis.com/css?family=Baloo+Bhai|Bree+Serif&display=swap" rel="stylesheet">
+        <title>Home</title>
+    </head>
+    <body style="background-color: #b9d6eb;">
+        
+        <%- include('./partials/navbar')%></body>
+    
+        <section class="section1">
+            <div class="slideshow-container">
+                <div class="slide active">
+                    <div class="slide-content">
+                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloremque quibusdam possimus mollitia laborum aperiam ipsum vero, laboriosam, voluptas culpa expedita, officiis aut recusandae ad quo eos? Consequuntur perspiciatis doloremque amet!</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="slide-content">
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis est quod voluptatum quidem, ea maxime nisi ipsam saepe rem cumque ipsum similique neque magni rerum tempora. Minus sunt aliquid voluptates!</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="slide-content">
+                        <p>Lorem ipsum dolor sit  d, consectetur adipisicing elit. Laboriosam quidem neque optio consequuntur maxime dignissimos rem similique mollitia in ab harum incidunt quo, velit laborum veritatis sit. Neque, fuga quas!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <header>
+            <h1>Our Services</h1>
+        </header>
+        <hr>
+        <section class="section2">
+            <div class="btn1">
+                <button id="prev"><h2><</h2></button>
+            </div>
+            <div class="slider">
+                <div class="services">
+                    <img src="../images/7.jpg" alt="" style="border-radius: 20px;">
+                    <h2>Medicine Management</h2>    
+                </div>
+                <div class="services">
+                    <img src="../images/5.png" alt="">
+                    <h2>Medicine Ordering</h2>
+                    
+                </div>
+                <div class="services">
+                    <img src="../images/4.jpg" alt=" "  style="border-radius: 20px;">
+                    <h2 >Appointment Scheduling</h2>
+                    
+                </div>
+                <div class="services">
+                    <img src="../images/3.jpg" alt=" "  style="border-radius: 20px;">
+                    <h2>Support Community</h2>
+                    
+                </div>
+                <div class="services">
+                    <img src="../images/1.jpg" alt=" "  style="border-radius: 20px;">
+                    <h2>SWakeed</h2>
+                    
+                </div>
+                <div class="services">
+                    <img src="../images/1.jpg" alt=" "  style="border-radius: 20px;">
+                    <h2>SWakeed</h2>
+                    
+                </div>
+                <div class="services">
+                    <img src="../images/1.jpg" alt=" "  style="border-radius: 20px;">
+                    <h2>SWakeed</h2>
+                    
+                </div>
+                <div class="services">
+                    <img src="../images/1.jpg" alt=" "  style="border-radius: 20px;">
+                    <h2>SWakeed</h2>
+                    
+                </div>
+                <div class="services">
+                    <img src="../images/1.jpg" alt=" "  style="border-radius: 20px;">
+                    <h2>SWakeed</h2>
+                    
+                </div>
+            </div>
+            <div class="btn2">
+                <button id="next"><h2>></h2></button>
+            </div>
+        </section>
+        <hr>
+        <header>
+            <h1>Our Clients</h1>
+        </header>
+        <section class="section3">
+            <div class="clients"><img src="../images/logo1.png" alt=""height="180px" width="180px"></div>
+            <div class="clients"><img src="../images/logo2.png" alt=""height="180px" width="180px"></div>
+            <div class="clients"><img src="../images/logo3.png" alt=""height="180px" width="180px"></div>
+            <div class="clients"><img src="../images/logo4.png" alt=""height="180px" width="180px"></div>
+        </section>   
+        
+        <%- include('./partials/Footer')%></body>
+        
+        <script >
+            // Event Listener for sliding action in 1st section
+            var slides = document.querySelectorAll('.slide');
+            var currentSlide = 0;
+            var slideInterval = setInterval(nextSlide, 4000); 
+            function showSlide(index) {
+                slides[currentSlide].classList.remove('active'); 
+                slides[index].classList.add('active'); 
+                currentSlide = index; 
+            }
+
+            function nextSlide() {
+                var nextIndex = (currentSlide + 1) % slides.length; 
+                showSlide(nextIndex); 
+            }
+
+        
+
+            // Event listener for listing services 
+
+            const slider = document.querySelector('.slider');
+            const prevBtn = document.getElementById('next');
+            const nextBtn = document.getElementById('prev');
+
+            prevBtn.addEventListener('click', () => {
+                slide('left');
+            });
+
+            nextBtn.addEventListener('click', () => {
+                slide('right');
+            });
+
+            function slide(direction) {
+                const slideWidth = slider.getBoundingClientRect().width;
+                const offset = direction === 'left' ? slideWidth : -slideWidth;
+
+                slider.style.transition = 'none';
+                slider.style.transform = `translateX(${offset}px)`;
+
+                if (direction === 'left') {
+                    slider.prepend(slider.lastElementChild);
+                } else {
+                    slider.appendChild(slider.firstElementChild);
+                }
+
+                void slider.offsetWidth;
+
+                slider.style.transition = 'transform 1.5s ease-in-out';
+                slider.style.transform = 'translateX(0)';
+            }
+         </script> 
+    </body>
+    </html>
+    

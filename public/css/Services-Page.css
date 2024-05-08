@@ -1,0 +1,124 @@
+*{
+    margin: 0%;
+    padding: 0%;
+}
+/* Services Section Styling */
+.serviceslist {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: #80b8d8; 
+    padding: 50px 0; 
+}
+
+#S {
+    background-color: #80b8d8; 
+    text-align: center;
+    font-size: 5.5rem;
+}
+
+.serviceslist a {
+    padding: 20px 40px; 
+    text-decoration: none;
+    color: #fff; 
+    background-color: #1788A6; 
+    border-radius: 30px; 
+    margin: 10px; 
+    transition: background-color 0.3s ease; 
+}
+
+.serviceslist a:hover {
+    background-color: #04599d; 
+}
+
+/* Adjustments for smaller screens */
+@media screen and (max-width: 768px) {
+    .serviceslist a {
+        padding: 15px 30px; 
+        font-size: 14px; 
+    }
+}
+/* Section 2 Styling */
+.section2 {
+    padding: 50px 0; 
+    background-color: #b9d6eb; 
+}
+
+.outer {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    margin-bottom: 40px; 
+}
+
+.inner {
+    max-width: 600px; 
+    padding: 20px;
+    text-align: justify; 
+}
+
+.outer img {
+    border-radius: 20px; 
+    margin-right: 20px; 
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 24px; 
+}
+
+p {
+    line-height: 1.6; 
+}
+
+@media screen and (max-width: 768px) {
+    .inner {
+        padding: 20px;
+    }
+
+    .outer img {
+        max-width: 100%; 
+        margin-right: 0; 
+        margin-bottom: 20px; 
+    }
+
+    h1 {
+        font-size: 20px; 
+    }
+}
+
+
+/* Scroll UP Button */
+.l1 {
+    position: fixed;
+    z-index: 2;
+    border: #1788A6;
+     top: 90%;
+    left: 97.5%;
+    background-color: #1788A6;
+    border-radius: 50%;
+    width: 37px;
+    height: 37px;
+    display: flex;
+    justify-content: center;
+    transform: translateX(-50%);
+    opacity: 1;
+    transition: opacity 1s ease-in-out;}
+.l1.show {
+    opacity: 1;
+    cursor: pointer;
+    pointer-events: auto;
+}
+/*Arrow Icon for Button*/
+.arrow-icon {
+    transition: color 0.3s, transform 0.3s;
+    fill: white;
+    position: relative;
+}
+.arrow-icon:hover {
+    fill: rgb(221, 239, 251);
+    stroke: #8ABFFF;
+    transform: scale(1.39); 
+    cursor: pointer;
+}
+

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../css/Doctors-Page.css">
+        <link rel="stylesheet" href="../css/Components.css">
+        <link rel="shortcut icon" href="../images/logo.jpg" type="image/x-icon">
+        <title>Our Doctors</title>
+    </head>
+    <body>
+        <%- include('./partials/navbar')%></body>
+        <section class="sect-1">
+            <% doctors.forEach(doctor => { %>
+                <div class="doc">
+                    <img src="../images/profile-default.svg" alt="dp" height="100px" width="100px">
+                    <h2><%= doctor.Specialization %></h2>
+                    <p><strong>Qualification:</strong> <%= doctor.Qualification %></p>
+                    <p><strong>License No:</strong> <%= doctor.LicenseNo %></p>
+                    <p><strong>Institute:</strong> <%= doctor.Institute %></p>
+                    <p><strong>Experience:</strong> <%= doctor.Experience %> years</p>
+                    <button class="btn">Consult</button>
+                    <!-- Add more details as needed -->
+                </div>
+            <% }); %>
+         </section>
+         <%- include('./partials/Footer')%></body>
+
+    <script >
+    const consult=document.getElementById()
+
+    </script>
+    </body>
+
+</html>

@@ -3,29 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/services-styles.css">
-    <link rel="shortcut icon" href="../images/logo.jfif" type="image/x-icon">
+    <link rel="stylesheet" href="../css/Services-Page.css">
+    <link rel="stylesheet" href="../css/Components.css">
+    <link rel="shortcut icon" href="../images/logo.jpg" type="image/x-icon">
     <title>Our Services</title>
 </head>
-<body style="background-color: #81cdfc;">
-    <nav id="nav" class="navbar">
-        <div class="logo">
-            <img src="../images/logo.jfif" alt="logo" height="50px" width="50px">
-            <h2>Nexus Medica</h2>
-        </div>    
-        <ul>
-            <li class="nav-item"><a href="home.html">Home</a></li>
-            <li class="nav-item"><a href="contact-us.html">Contact Us</a></li>
-            <li class="nav-item"><a href="">Doctors</a></li>
-            <li class="nav-item"><a href="">Services</a></li>
-            <li class="nav-item"><a href="signup.html">SignUp</a></li>
-            <li class="nav-item"><a href="login.html">Login</a></li>
-        </ul>
-       <div class="search-icon">
-        <input type="text" id="box" placeholder="Search" class="searchbox">
-        <img src="../images/search.svg" id="icon" alt=""  height="15px" width="15px">
-       </div>
-    </nav>
+<body style="background-color: #80b8d8;">
+    <%- include('./partials/navbar')%></body>
+    <div id="dav">
+
+    </div>
     <div class="l1" id="scrolldown">
         <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="9 -20 32 72">
           <path d="M 20 5 Q 22 0 25 0 T 30 5 L 45 30 Q 45 35 40 35 T 10 35 Q 5 35 5 30 Z"  />
@@ -144,45 +131,34 @@
         </div>
     </section>
   
-    <footer>
-    <div class="center">
-        Copyright &copy; www.webforgersnexus.com. All rights reserved!
-    </div>
-    <div class="links">
-        <img src="../images/fb.png" alt="facebook"   height="20px" width="20px" style="padding: 0% 2%;">
-        <img src="../images/fb.png" alt="Instagram"  height="20px" width="20px"  style="padding: 0% 2%;">
-        <img src="../images/fb.png" alt="Twitter" height="20px" width="20px"  style="padding: 0% 2%;">
-        <img src="../images/fb.png" alt="Youtube" height="20px" width="20px"  style="padding: 0% 2%;">
-        <img src="../images/fb.png" alt="linkedin" height="20px" width="20px" style="padding: 0% 2%;">
-        <img src="../images/fb.png" alt="whatsapp" height="20px" width="20px" style="padding: 0% 2%;">
-    </div>
-    </footer>
+    <%- include('./partials/Footer')%></body>
 
- <script >
+
+ <script>
  
  // Event listener for services scrolling
  const serviceLinks = document.querySelectorAll('.serviceslist a');
-    console.log('sad');
-
-    serviceLinks.forEach(link => {
-        link.addEventListener('click', function(event) {
-            event.preventDefault();
-
-            const targetId = this.getAttribute('href').substring(1);
-
-            const targetSection = document.getElementById(targetId);
-
-            targetSection.scrollIntoView({ behavior: 'smooth' });
+ 
+ serviceLinks.forEach(link => {
+     link.addEventListener('click', function(event) {
+         event.preventDefault();
+         
+         const targetId = this.getAttribute('href').substring(1);
+         
+         const targetSection = document.getElementById(targetId);
+         
+         targetSection.scrollIntoView({ behavior: 'smooth' });
         });
     });
-
- // Event listener for services scrolling
- const scrolls = document.querySelector('.l1');
+    
+    // Event listener for services scrolling
+    const scrolls = document.querySelector('.l1');
     console.log('sad');
-
-        scrolls.addEventListener('click', function(event) {
-            const targetSection = document.getElementById('nav');
-
+    
+    scrolls.addEventListener('click', function(event) {
+        const targetSection = document.getElementById('dav');
+        console.log(targetSection);
+        
             targetSection.scrollIntoView({ behavior: 'smooth' });
         });        
  </script>
