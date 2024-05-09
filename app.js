@@ -387,11 +387,192 @@ app.post('/patient/ask',(req,res)=>{
     })
 })
 
+// Doctor APis
 app.get('/doctor', (req, res) => {
-    res.render('Doctor-Profile');
-    
+    if (req.cookies.UserData.loggedin==true)
+        {
+            const {id,mail,password}=req.cookies.UserData;
+            res.render('Doctor-Profile');
+     
+        }
+        else
+        {    
+            res.send('login timing expired');
+        }  
 });
 
+app.get('/doctor:section', (req, res) => {
+    const section = req.params.section;
+    const {userid,mail}=req.cookies.UserData;
+    console.log('sectsdsion:', req.params);
+
+    if (section == '1') {
+        console.log('Profile Page:', section);
+        const sql = `SELECT D.*, U.FirstName, U.LastName
+        FROM Doctors AS D
+        JOIN Users AS U ON D.DoctorId = U.UserID
+        WHERE u.email = ?;
+        `
+
+        executeQuery(sql,mail)
+        .then(Doctor => {
+            ps=`
+            SELECT P.*, U.FirstName, U.LastName
+            FROM Patients AS P
+            JOIN Users AS U ON P.PatientId = U.UserID
+            WHERE P.DoctorInCharge = '${userid}';;
+            `
+            executeQuery(ps)
+            .then(Patients=>{
+                console.log('Doctor:', Doctor);
+                console.log('Patient:', Patients);
+                res.json({ section, Doctor,Patients });
+            })
+            .catch(err=>{
+                console.log("ERR:",err);
+            })
+        })
+        .catch(error => {
+            console.error('Error executing query:', error);
+        });
+                
+    }
+     else if (section == '2') {
+        sql=`
+        SELECT A.*, U.FirstName AS PatientFirstName, U.LastName AS PatientLastName
+        FROM Appointments AS A
+        JOIN Users AS U ON A.PatientID = U.UserID
+        WHERE A.DoctorID = '${userid}';`
+        executeQuery(sql)
+        .then(Appointments => {
+            patients=`
+            SELECT P.*, U.FirstName, U.LastName
+            FROM Patients AS P
+            JOIN Users AS U ON P.PatientId = U.UserID
+            WHERE P.DoctorInCharge = '${userid}';`
+            executeQuery(patients)
+            .then(patients=>{
+
+                res.json({ section, Appointments,patients});
+                console.log('Appointment:', Appointments);
+                console.log('Patient:', patients);
+                   })
+            .catch(err=>{
+                console.log('Error:',err);
+            });
+            console.log('Appointments:', Appointments);
+        })
+        .catch(error => {
+            console.error('Error executing query:', error);
+        });
+    }
+    else if (section == '3') { 
+        console.log('Consultations');
+        sql=`SELECT DISTINCT
+        ChatID,
+        OtherUser.FirstName AS OtherPersonFirstName,
+        OtherUser.LastName AS OtherPersonLastName
+    FROM
+        (
+            SELECT
+                ChatID,
+                CASE
+                    WHEN SenderID = '${userid}' THEN ReceiverID
+                    ELSE SenderID
+                END AS OtherUserID
+            FROM
+                Messages
+            WHERE
+                SenderID = '${userid}'
+                OR ReceiverID = '${userid}'
+        ) AS Interactions
+    INNER JOIN Users AS OtherUser ON OtherUser.UserID = Interactions.OtherUserID
+    WHERE
+        OtherUserID <> '${userid}';`
+        executeQuery(sql)
+        .then(Messages=>{
+            console.log('Chats',Messages);
+            res.json({ section,Messages}); // Render the template after data retrieval
+        })
+        .catch(error=>{
+            console.error('Error executing query:',error);
+        });
+    }
+    else if (section == '4') {
+     sq=`Select * from Prescriptions;`
+     executeQuery(sq)
+     .then(Prescriptions=>{
+        sql=`
+        select U.FirstName,U.LastName,d.DoctorId,d.Specialization,d.Qualification 
+        from 
+        doctors d
+        Inner Join Users U on d.DoctorId=U.UserID;`;
+        executeQuery(sql)
+        .then(Docs=>{
+            console.log('Succeed:',Docs);
+            sql2=`select Disease from Patients
+            where PatientID='${req.cookies.UserData.userid}'`
+            executeQuery(sql2)
+            .then(Diseases=>{
+                console.log("Prescription,",Prescriptions);
+                res.json({Docs,Diseases,Prescriptions});
+            })
+            .catch(err=>{
+                console.log('Error:',err);
+            })
+        })
+        .catch(err=>{
+            console.log('Error:',err);
+        })
+     })
+     .catch(err=>{
+        console.log("Err:",err);
+     })
+    console.log('Prescriptions');
+
+    }
+    
+ 
+});
+app.post('/doctor/appointment/add',(req,res)=>{
+    console.log("Appointment Details",req.body);
+    sql=`Insert into Appointments(AppointmentId,PatientID,DoctorID,CaseDescription,AppointmentDateTime) Values(?,?,?,?,?)`;
+
+    values=[uuidv4(),req.body.patient,req.cookies.UserData.userid,req.body.case,req.body.Date+' '+req.body.time+':00'];
+    console.log('val',values);
+    executeQuery(sql,values)
+    .then(suc=>{
+        console.log("Yay it works");
+        mess=`Insert into Messages(MessageID,ChatID,SenderID,ReceiverID,Message) values(?,?,?,?,?)`
+        values=[uuidv4(),uuidv4(),req.cookies.UserData.userid,req.body.patient,'Dear Patient , Your Appointment has been set']
+        executeQuery(mess,values)
+        .then(suc=>{
+            console.log("Appointment has been set");
+
+        })
+        .catch(err=>{
+            console.log('ERR:',err);
+        })
+    })
+
+    .catch(err=>{
+        console.log('ERR:',err);
+    })
+    res.redirect('/doctor');
+})
+app.post('/doctor/appointment/delete',(req,res)=>{
+    d=req.body.appointmentId;
+    console.log('Delete:',req.body);
+    s=`Delete from Appointments where AppointmentId="${d}"`;
+    executeQuery(s)
+    .then(suc=>{
+        console.log('Deleted');
+        res.redirect('/doctor');
+    })
+    .catch(err=>{
+        console.log('ERR:',err);
+    })
+})
 app.get('/login', (req, res) => {
   res.render('Login-Page');
 });
@@ -562,7 +743,7 @@ app.post('/login',(req,res)=>{
                     res.redirect('/patient');
                 } 
                 else {
-                    res.redirect('/patient');
+                    res.redirect('/doctor');
                 }
                         
             }
