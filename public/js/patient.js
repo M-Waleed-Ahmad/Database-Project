@@ -404,7 +404,6 @@
     }
 
     // This is part is for chats only
-    let importantInfo;
     function fetchChat(lname){
         const url = '/patient?section=3&lname=' + lname; // Update URL based on the selected section
         window.history.pushState({}, '', url); // Update URL without reloading the page
