@@ -475,7 +475,11 @@ app.get('/patient:section', (req, res) => {
     }
     else if (section == '5') {
         console.log('Support Community');
-        sql=`Select * from Questions;`
+        sql=`
+        SELECT Users.FirstName, Users.LastName, Questions.question_statement,Questions.qid
+        FROM Questions
+        JOIN Users ON Questions.patientid = Users.UserID;
+        `
         executeQuery(sql)
         .then(questions=>{
             console.log("Questions:",questions);
@@ -573,7 +577,11 @@ app.post('/patient/addPrescription',(req,res)=>{
 });
 app.get('/patient/qna',(req,res)=>{
     console.log('q',req.query.qid);
-    sql=`Select * from answers where qid='${req.query.qid}'`
+    sql=`
+    SELECT Users.FirstName, Users.LastName, Answers.answer_statement,Answers.patientid
+    FROM Answers
+    JOIN Users ON Answers.patientid = Users.UserID
+    WHERE Answers.qid = '${req.query.qid}';`
     executeQuery(sql)
     .then(answers=>{
         executeQuery(`Select question_statement from questions where qid='${req.query.qid}'`)
@@ -955,7 +963,7 @@ app.post('/signup/doctor',(req,res)=>{
     const user_query='INSERT INTO Users (UserID, PositionID, FirstName, LastName, Email, Password, Gender)VALUES (?,?,?,?,?,?,?)';
     const values1=[userid,2,firstname,lastname,email,password,gender];
     const doctor_query='INSERT INTO Doctors (DoctorID, Specialization, Qualification, LicenseNo,Institute,Experience,Language,AdminsApproval)VALUES(?,?,?,?,?,?,?,?)';    
-    const values2=[userid,Specialization,Qualification,LicenseNo,institution, Experience, languages,0git];
+    const values2=[userid,Specialization,Qualification,LicenseNo,institution, Experience, languages,0];
     pool.query(user_query,values1,(err,SUC)=>{
         if (err) {
             console.log('Error:',err);

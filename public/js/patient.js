@@ -327,7 +327,7 @@
                     div.setAttribute('id', `question${index+1}`);
                     div.classList.add('prescription');
                     div.innerHTML=`
-                    <p><strong>User:</strong>${data.questions[index].patientid}</p>
+                    <p><strong>User:</strong>${data.questions[index].FirstName+data.questions[index].LastName}</p>
                     <p><strong>Question:</strong>${data.questions[index].question_statement}</p>
                     `
                     questionBox.appendChild(div); 
