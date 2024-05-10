@@ -175,7 +175,7 @@ app.get('/admin', (req, res) => {
         }
         else
         {    
-            res.render('Admin');
+            res.send('login timing expired');
         } 
   });
   app.get('/admin:section', (req, res) => {
@@ -954,8 +954,8 @@ app.post('/signup/doctor',(req,res)=>{
     const { LicenseNo,Experience,Qualification, institution, languages,Specialization} = req.body;
     const user_query='INSERT INTO Users (UserID, PositionID, FirstName, LastName, Email, Password, Gender)VALUES (?,?,?,?,?,?,?)';
     const values1=[userid,2,firstname,lastname,email,password,gender];
-    const doctor_query='INSERT INTO Doctors (DoctorID, Specialization, Qualification, LicenseNo,Institute,Experience,Language)VALUES(?,?,?,?,?,?,?)';    
-    const values2=[userid,Specialization,Qualification,LicenseNo,institution, Experience, languages];
+    const doctor_query='INSERT INTO Doctors (DoctorID, Specialization, Qualification, LicenseNo,Institute,Experience,Language,AdminsApproval)VALUES(?,?,?,?,?,?,?,?)';    
+    const values2=[userid,Specialization,Qualification,LicenseNo,institution, Experience, languages,0git];
     pool.query(user_query,values1,(err,SUC)=>{
         if (err) {
             console.log('Error:',err);
