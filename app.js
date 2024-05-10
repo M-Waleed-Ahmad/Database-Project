@@ -165,6 +165,100 @@ app.get('/SignUp/doctor', (req, res) => {
 app.get('/login', (req, res) => {
     res.render('Login-Page');
   });
+
+app.get('/admin', (req, res) => {
+    if (req.cookies.UserData.loggedin==true)
+        {
+          const {id,mail,password}=req.cookies.UserData;
+     
+          res.render('Admin');
+        }
+        else
+        {    
+            res.render('Admin');
+        } 
+  });
+  app.get('/admin:section', (req, res) => {
+    const section = req.params.section;
+    const {userid,mail}=req.cookies.UserData;
+    console.log('sectsdsion:', req.params);
+
+    if (section == '1') {
+        sql=`SELECT Users.FirstName, Users.LastName, Doctors.*
+        FROM Doctors
+        JOIN Users ON Doctors.DoctorId = Users.UserID
+        WHERE Doctors.AdminsApproval = 0;
+        `
+        executeQuery(sql)
+        .then(Doctors => {
+            res.json({ section, Doctors });
+            console.log('Doctors:', Doctors);
+        })
+        .catch(error => {
+            console.error('Error executing query:', error);
+        });
+    }
+    else if (section == '2') {
+        sql=`SELECT * FROM Doctors WHERE AdminsApproval = 1;`
+        executeQuery(sql)
+        .then(Doctors => {
+            res.json({ section, Doctors });
+            console.log('Doctors:', Doctors);
+        })
+        .catch(error => {
+            console.error('Error executing query:', error);
+        });
+    }
+    else if (section == '3') { 
+        console.log('Queries');
+        sql=`SELECT * from ContactUs;`
+        executeQuery(sql)
+        .then(Messages=>{
+            console.log('Chats',Messages);
+            res.json({ section,Messages}); // Render the template after data retrieval
+        })
+        .catch(error=>{
+            console.error('Error executing query:',error);
+        });
+    }
+    });
+app.post('/admin/add',(req,res)=>{
+    console.log('Add:',req.body);
+    userid=uuidv4();
+    const { firstName, lastName, email, password, gender, adminPhone, adminEmail } = req.body;
+    const user_query = 'INSERT INTO Users (UserID, PositionID, FirstName, LastName, Email, Password, Gender) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const values1 = [userid, 1, firstName, lastName, email, password, gender];
+    const admin_query = 'INSERT INTO Admins (AdminID, PhoneNo, Email) VALUES (?, ?, ?)';
+    const values2 = [userid, adminPhone, adminEmail];
+    executeQuery(user_query, values1)
+    .then(suc=>{
+        executeQuery(admin_query, values2)
+        .then(suc=>{
+            res.sendStatus(200);
+        })
+        .catch(err=>{
+            console.log('ERR:',err);
+        })
+    })
+    .catch(err=>{
+        console.log('ERR:',err);
+    })
+})
+app.post('/admin/approve',(req,res)=>{
+    console.log('Approve:',req.body);
+    const {DoctorId}=req.body;
+    const sql=`UPDATE Doctors
+    SET AdminsApproval = 1
+    WHERE DoctorId = '${DoctorId}';`
+    executeQuery(sql)
+    .then(suc=>{
+        console.log('Approved');
+        res.redirect('/admin');
+    })
+    .catch(err=>{
+        console.log('ERR:',err);
+    })
+})
 // ///////////////////////////////////////////////////////////////////////////////////
 // Patient Profile page urls
 app.get('/patient/update',(req,res)=>{
@@ -248,6 +342,7 @@ app.post('/patient/update',(req,res)=>{
         console.log('ERR:',err);
     })
 })
+
 
 app.get('/patient', (req, res) => {
     
@@ -915,8 +1010,11 @@ app.post('/login',(req,res)=>{
                     
                      res.redirect('/patient');
                 } 
-                else {
+                else if (positionid=='2'){
                     res.redirect('/doctor');
+                }
+                else{
+                    res.redirect('/admin');
                 }
                         
             }

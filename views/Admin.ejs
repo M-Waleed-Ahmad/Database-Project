@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="../css/Admin.css">
+    <link rel="icon" href="../images/logo.jpg">
+
+</head>
+<body>
+    <div class="navbar">
+        <div class="div1">
+          <img src="../images/logo.jpg" alt="Logo" class="logo" height="50px" width="50px">
+          <a href="/" class="website-name">Nexus Medica</a>
+        </div>
+        <div class="div2">
+          <div class="nav-links">
+            <a href="/home">Home</a>
+            <a href="/services">Services</a>
+            <a href="/doctors">Doctors</a>
+            <a href="/contact">Contact Us</a>
+          </div>
+          <div class="hamburger" id="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+       
+        </div>
+    </div>
+    
+    <section id="sidebar" class="sidebar">
+        <ul>
+            <li><a class="item" data-section="1" href="#">Approve Doctors</a></li>
+            <li><a class="item" data-section="2" href="#">Add Admins</a></li>
+            <li><a class="item" data-section="3" href="#">View Messages</a></li>
+            <li><a class="item" href="/logout">Logout </a></li>
+        </ul>
+    </section>
+
+    <section class="container" id="div-section">
+        <div id="div1"></div>
+        <div id="div2"></div>
+        <div id="div3"></div>
+    </section>
+    <footer>
+        <p>&copy; 2024 Admin Dashboard. All rights reserved.</p>
+    </footer>
+    <script>
+            const sidebar = document.getElementById('sidebar');
+    const hamburger = document.getElementById('hamburger');
+
+    hamburger.addEventListener('click', () => {
+        sidebar.style.left = sidebar.style.left === '0px' ? '-250px' : '0px';
+    });
+
+    
+    // Function to fetch data for the selected section using AJAX
+    function fetchData(section) {
+        // AJAX request
+        const url = '/admin?section=' + section; // Update URL based on the selected section
+        window.history.pushState({}, '', url); // Update URL without reloading the page
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/admin' + section, true);
+
+        // Set up onload handler
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 400) {
+                // On successful response, update the content of the section
+                const responseData = JSON.parse(xhr.responseText);
+                updateSectionContent(section, responseData);
+                console.log(responseData);
+            } else {
+                console.error('Request failed with status:', xhr.status);
+            }
+        };
+
+        // Set up onerror handler
+        xhr.onerror = function() {
+            console.error('Request failed');
+        };
+
+        // Send the request
+        xhr.send();
+    }
+
+    // Function to update the content of the section based on the fetched data
+    function updateSectionContent(section, data) {
+        const sectionElement = document.getElementById(`div${section}`);
+        console.log(sectionElement,'aasd');
+
+        switch (section) {
+            case '1':
+                sectionElement.style.display = 'block';
+                console.log(sectionElement,'asd');
+                for (let int = 1; int <= 3; int++) {
+                    if (int==1) {
+                    continue;   
+                    }
+                    document.getElementById(`div${int}`).style.display = 'none';
+
+                }
+                sectionElement.innerHTML=` `;
+                for (let index = 0; index < data.Doctors.length; index++) {
+                    sectionElement.innerHTML+=`  
+                        <div id="doctor${index}" class="doc">
+                            <img src="../images/profile-default.svg" alt="dp" height="100px" width="100px">
+                            <h2>${data.Doctors[index].FirstName+" "+data.Doctors[index].LastName}</h2>
+                            <p><strong>Qualification:</strong>${data.Doctors[index].Qualification}</p>
+                            <p><strong>License No:</strong>${data.Doctors[index].LicenseNo}</p>
+                            <p><strong>Institute:</strong> ${data.Doctors[index].Institute}</p>
+                            <p><strong>Experience:</strong> ${data.Doctors[index].Experience}</p>
+                            <p><strong>Approval:</strong> ${data.Doctors[index].AdminsApproval}</p>
+                            <button class="btns" onclick="Approve('${data.Doctors[index].DoctorId}');">Approve</button>
+                        </div>
+          `;
+    }
+
+            break;
+            case '2':
+                sectionElement.style.display = 'block';
+                console.log(sectionElement,'asd');
+                for (let int = 1; int <= 3; int++) {
+                    if (int==2) {
+                    continue;   
+                    }
+                    document.getElementById(`div${int}`).style.display = 'none';
+
+                }
+                sectionElement.innerHTML=`  
+                       <h1>User and Admin Form</h1>
+        
+        <!-- User Form -->
+        <form action="/admin/add" method="POST" class="user-form">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="adminPhone">Phone Number</label>
+                <input type="text" id="adminPhone" name="adminPhone" required>
+            </div>
+            <div class="form-group">
+                <label for="adminEmail">Email</label>
+                <input type="email" id="adminEmail" name="adminEmail" required>
+            </div>
+            <button type="submit">Submit</button>
+            </form>
+
+        <!-- Admin Form -->
+       
+`
+            break;
+            case '3':
+            sectionElement.style.display = 'block';
+                console.log(sectionElement,'asd');
+                for (let int = 1; int <= 3; int++) {
+                    if (int==3) {
+                    continue;   
+                    }
+                    document.getElementById(`div${int}`).style.display = 'none';
+
+                }
+                sectionElement.innerHTML=` `;
+                for (let index = 0; index < data.Messages.length; index++) {
+                    sectionElement.innerHTML+=`  
+                        <div id="doctor${index}" class="doc">
+                            <img src="../images/profile-default.svg" alt="dp" height="100px" width="100px">
+                            <h2>${data.Messages[index].Name}</h2>
+                            <p><strong>Email:</strong>${data.Messages[index].Email}</p>
+                            <p><strong>Phone No:</strong>${data.Messages[index].PNo}</p>
+                            <p><strong>Message:</strong> ${data.Messages[index].Message}</p>
+                         </div>
+          `;
+    }
+
+                break;
+    
+             
+            default:
+                break;
+        }
+    }
+
+    // Function to handle clicking on section links
+    function handleSectionClick(element) {
+        const section = element.getAttribute('data-section'); // Get the section number from data attribute
+        fetchData(section); // Fetch data for the selected section
+    }
+
+    // Function to initialize the page
+    function initializePage() {
+        // Add event listeners to section links
+        const sectionLinks = document.querySelectorAll('.item');
+        sectionLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                handleSectionClick(link);
+            });
+        });
+    }
+
+    // Call initializePage() function when the page is fully loaded
+    window.addEventListener('load', initializePage);
+
+    function Approve(params) {
+        console.log(params);
+        fetch('/admin/approve', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                DoctorId: params
+            })
+        })
+        
+    }
+    </script>
+</body>
+</html>
