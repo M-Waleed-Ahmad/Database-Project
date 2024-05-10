@@ -4,65 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width= , initial-scale=1.0">
     <link rel="stylesheet" href="../css/Doctor-Profile.css">
+    <link rel="stylesheet" href="../css/comp.css">
     <link rel="shortcut icon" href="../images/logo.jpg" type="image/x-icon">
     <title>Doctor Profile Page</title>
 </head>
 <body style="background-color: aliceblue;">
-    <nav class="outernav">
-        <nav class="innernav1">
-            <div style="grid-area: 1/1;">
-                 <div class="sidebar" id="sidebar">
-                     <ul>
-                         <li><a href="#">Link 1</a></li>
-                         <li><a href="#">Link 2</a></li>
-                         <li><a href="#">links 3</a></li>
-                     </ul>
-                 </div>
-                
-                 <div class="hamburger" id="hamburger">
-                     <div class="bar"></div>
-                     <div class="bar"></div>
-                     <div class="bar"></div>
-                 </div>
-             </div>
-           
-                 <img src="../images/profile-default.svg" alt="">
-                 <ul>
-                     <li><a class="as" href="">Home</a></li>
-                     <li><a class="as" href="">Services</a></li>
-                     <li><a class="as" href="">Contact Us</a></li>
-                     
-                 </ul>
-                 <div class="search-icon">
-                     <input type="text" id="box" placeholder="Search" class="searchbox">
-                     <img src="../images/search.svg" id="icon" alt=""  >
-                 </div>
-        </nav>
-        <nav class="innernav2">
-            <ul>
-                <li><a class="item" id="link1" href="#" data-section="1" onclick="toggleLine(this)">Profile</a></li>
-                <li><a class="item" id="link2" href="#" data-section="2" onclick="toggleLine(this)">Appointments</a></li>
-                <li><a class="item" id="link3" href="#" data-section="3" onclick="toggleLine(this)">Consultations</a></li>
-                <li><a class="item" id="link4" href="#" data-section="4" onclick="toggleLine(this)">Prescriptions</a></li>
-                
-            </ul>
-            <div class="line"></div>
-        </nav>
-        
-    </nav>
+    <div class="navbar">
+        <div class="div1">
+          <img src="../images/logo.jpg" alt="Logo" class="logo" height="50px" width="50px">
+          <a href="/" class="website-name">Nexus Medica</a>
+        </div>
+        <div class="div2">
+          <div class="nav-links">
+            <a href="/home">Home</a>
+            <a href="/services">Services</a>
+            <a href="/doctors">Doctors</a>
+            <a href="/contact">Contact Us</a>
+          </div>
+          <div class="hamburger" id="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+       
+        </div>
+    </div>
+    
     <section id="sidebar" class="sidebar">
         <ul>
-            <li><a href="#">Link 1</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Settings </a></li>
+            <li><a class="item" data-section="1" href="#">Profile</a></li>
+            <li><a class="item" data-section="2" href="#">Appointments</a></li>
+            <li><a class="item" data-section="3" href="#">Consultations</a></li>
+            <li><a class="item" data-section="4" href="#">Prescriptions</a></li>
+            <li><a class="item" href="/logout">Logout</a></li>
         </ul>
     </section>
+    
     <section class="container" id="div-section">
         <div id="div1"></div>
         <div id="div2"></div>
         <div id="div3"></div>
         <div id="div4"></div>
-        <div id="div5"></div>
+        <div id="div5" style="height: 400px; display: flex;justify-content: center; flex-direction: column;">
+          <h1 style="font-size: xxx-large;color: #002c41;">Welcome Home</h1>
+        </div>
     </section>
 
     <script src="../js/doctor.js">

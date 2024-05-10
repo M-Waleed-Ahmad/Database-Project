@@ -3,13 +3,10 @@
     padding: 0;
     box-sizing: border-box;
 }
-body {
-    font-family: Arial, sans-serif;
-    background-color: #b9d6eb;
-    color: #333;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
+body{
+    background-color: #b9d6eb; 
+    background-image: linear-gradient(to right, #b9d6eb, #3EABE1); /* Gradient background */
+
 }
 .container {
     max-width: 1200px;
@@ -24,7 +21,8 @@ body {
     margin-top: 20px;
 }
 .doc {
-    background-color: #fff;
+    background-color: #b9d6eb; 
+    background-image: linear-gradient(to right, #b9d6eb, #a4d5ee); /* Gradient background */
     text-align: center;
     padding: 20px;
     margin: 20px;
@@ -51,7 +49,7 @@ body {
 .btns,.btn {
     margin: 10px;
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #3EABE1;
     border: none;
     border-radius: 5px;
     color: #fff;

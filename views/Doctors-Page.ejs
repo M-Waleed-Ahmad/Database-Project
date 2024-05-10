@@ -5,11 +5,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../css/Doctors-Page.css">
         <link rel="stylesheet" href="../css/Components.css">
+        <link rel="stylesheet" href="../css/comp.css">
         <link rel="shortcut icon" href="../images/logo.jpg" type="image/x-icon">
         <title>Our Doctors</title>
     </head>
     <body id="bod">
-        <%- include('./partials/navbar')%></body>
+        <% if (UserData.loggedin) { %>
+            <%- include('./partials/nav2')%></body>
+        <% } else { %>
+            <%- include('./partials/navbar')%></body>
+        <% } %>
+        
         <div class="sect-1">
             <div class="consult">
                 <label for="concern">Concern:</label><br>

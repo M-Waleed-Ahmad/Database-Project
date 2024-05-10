@@ -13,7 +13,9 @@
     height: 100%;
     z-index: -1;
     opacity: 2;
-    background-color: #b9d6eb;
+    background-color: #b9d6eb; 
+    background-image: linear-gradient(to right, #b9d6eb, #3EABE1); /* Gradient background */
+
 }
 #contact-box{
     display: flex;

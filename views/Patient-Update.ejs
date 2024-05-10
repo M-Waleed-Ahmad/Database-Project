@@ -3,37 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>Update Information</title>
     <link rel="stylesheet" href="../css/Patient-Signup.css">
     <link rel="stylesheet" href="../css/Components.css">
     <link rel="shortcut icon" href="../images/logo.jpg" type="image/x-icon">
 </head>
 <body>
     <div class="container">
-        <h1>Your  Basic Medical Information</h1>
+        <h1>Update Your Medical Information</h1>
         <br><br>
-        <form action="" method="post">
+        <form action="/patient/update" method="post">
             <div class="form-group">
                 <div class="name-group">
                     <div class="half">
                         <label for="age">Age:</label>
-                     <select id="age" name="age" required>
-                    <option value="yourage">Your age</option>
-                     <option value="infant">infant</option>
-                     <option value="onetoten">1-10</option>
-                     <option value="evltotwn">11-20</option>
-                     <option value="twn1tothir">21-30</option>
-                     <option value="thir1tofor">31-40</option>
-                     <option value="for1tofif">41-50</option>
-                     <option value="fif1tosixt">51-60</option>
-                     <option value="six1tosevn">61-70</option>
-                     <option value="aboveseventy">70 above</option>
-                     </select>
+                        <input type="number" name="age" id="age" required>
                     </div>
                     <div class="half">
                         <label for="Height">Height (meters):</label>
                         <input type="number" id="height" name="height" step="0.01" min="0.00" max="2.50" required>
-                        
                     </div>
                 </div>
             </div>
@@ -42,35 +30,24 @@
                 <div class="name-group">
                     <div class="half">
                         <label for="Weight">Weight (kg):</label>
-                     <select id="weight" name="weight" required>
-                    <option value="yourweight">Your weight</option>
-                     <option value="onetoten">1-10</option>
-                     <option value="evltotwn">11-20</option>
-                     <option value="twn1tothir">21-30</option>
-                     <option value="thir1tofor">31-40</option>
-                     <option value="for1tofif">41-50</option>
-                     <option value="fif1tosixt">51-60</option>
-                     <option value="six1tosevn">61-70</option>
-                     <option value="sevn1toeig">71-80</option>
-                     <option value="eig1tonin">81-90</option>
-                     <option value="nin1tohun">91-100</option>
-                     <option value="abovehun">100 above</option>
-                     </select>
+                        <input type="number"name="Weight" id="Weight" required>
+
                     </div>
                     <div class="half">
                         <label for="Allergies">Allergies:</label>
-                        <input type="text" id="Allergies" name="Allergies"  required>
-                        
+                        <input type="text" id="Allergies" name="Allergies" required>
                     </div>
-                </div>
-                   
+                </div>   
             </div>
+
             <div class="form-group" id="disease">
                 <div class="input_len_e">
                     <label for="disease">Disease:</label>
                     <input type="text" id="disease" name="disease" required>
                 </div>
             </div>
+
+            <!-- Medical history fields -->
             <div class="form-group" id="medical-history-fields">
                 <div class="input_len_e">
                     <label for="medicalHistory">Medical History 1:</label>
@@ -79,8 +56,10 @@
                     <input type="text" id="treatment1" name="treatment" required>
                 </div>
             </div>
-            <button type="button" id="waleed" class="add">Add More</button>
-         <br>
+
+            <!-- Button to add more medical history fields -->
+            <button type="button" id="addMoreMedicalHistory" class="add">Add More</button>
+            <br>
             <h2>Emergency Contact Information</h2>
             <div class="form-group">
                 <label for="contactName">Contact Name:</label>
@@ -95,16 +74,16 @@
                 <input type="email" id="contactEmail" name="contactEmail" required>
             </div>
             
-            <button type="submit">Sign Up</button>
+            <button type="submit">Update Information</button>
         </form>
-        <p>Already have an account? <a href="/login">Log in</a></p>
+        <p>Return to <a href="profile.html">Profile</a></p>
     </div>
-    <%- include('./partials/Footer')%></body>
 
-    <script >
+    <!-- JavaScript for adding more medical history fields -->
+    <script>
         let medicalHistoryCount = 1;
-        const as=document.getElementById('waleed');
-        as.addEventListener('click',()=>{
+        const addButton = document.getElementById('addMoreMedicalHistory');
+        addButton.addEventListener('click', () => {
             medicalHistoryCount++;
             const container = document.getElementById('medical-history-fields');
             const newField = document.createElement('div');
@@ -117,7 +96,7 @@
                 </div>
             `;
             container.appendChild(newField);
-        }) 
+        });
     </script>
 </body>
 </html>

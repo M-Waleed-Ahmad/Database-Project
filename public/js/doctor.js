@@ -41,7 +41,7 @@ function updateSectionContent(section, data) {
 
     switch (section) {
         case '1':
-        for (let int = 2; int < 5; int++) {
+        for (let int = 2; int <= 5; int++) {
             document.getElementById(`div${int}`).style.display = 'none';
         }
         sectionElement.style.display = 'block';
@@ -186,10 +186,12 @@ function updateSectionContent(section, data) {
                     </div>
                 </div>
                 <div id="conversation" >
-                    <h2>Conversation</h2>
-                        <div id="chat-container" class="messages">
+                    <div class='bye'>
+                        <h2>Conversation</h2>
+                     </div>     
+                    <div id="chat-container" class="messages">
                             <!-- Messages will be loaded here dynamically -->
-                        </div>
+                    </div>
                 
                 </div>
             </main> 
@@ -201,7 +203,7 @@ function updateSectionContent(section, data) {
                 chat.innerHTML+=`
                     <button class="bt" onclick="fetchChat({ ChatID: '${data.Messages[index].ChatID}', lastName: '${data.Messages[index].OtherPersonLastName}' })">
                         <div class="chat-box">
-                            <p>Doctor: ${data.Messages[index].OtherPersonFirstName+" "+data.Messages[index].OtherPersonLastName}</p>
+                            <p>Patient: ${data.Messages[index].OtherPersonFirstName+" "+data.Messages[index].OtherPersonLastName}</p>
                         </div>
                     </button>
                     `                    
@@ -221,9 +223,7 @@ function updateSectionContent(section, data) {
             console.log('ada');
             sectionElement.innerHTML=`
             <!-- Prescriptions -->
-    <header>
-        <h1>Prescriptions</h1>
-    </header>
+
     <main>
         <section class="prescription-list">
             <h2>Your Prescriptions</h2>
@@ -333,7 +333,7 @@ function apOp(){
 // This is part is for chats only
 let importantInfo;
 function fetchChat(lname){
-    const url = '/patient?section=3&lname=' + lname; // Update URL based on the selected section
+    const url = '/doctor?section=3&lname=' + lname; // Update URL based on the selected section
     window.history.pushState({}, '', url); // Update URL without reloading the page
     const xhr = new XMLHttpRequest();
     console.log(xhr);
@@ -392,6 +392,14 @@ if (adjacentDiv) {
 
     messagesDiv.insertAdjacentHTML('afterend',sendbox);        // Clear previous messages
     messagesDiv.innerHTML = '';
+
+    document.querySelector('.bye').innerHTML=`
+    <h2>Conversation</h2> 
+    <button onclick=chatDel("${chatId}")>
+    <svg  class="cross" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+    </svg>
+    </button>`
 
 // Loop through each message and create HTML elements to display them
 messages.Chat.forEach(message => {
@@ -511,4 +519,15 @@ const seconds = String(date.getSeconds()).padStart(2, "0");
 
 const formattedTime = `${twelveHourFormat}:${minutes}:${seconds} ${ampm}`;
 return formattedTime;
+}
+function chatDel(chatId){
+    fetch('/patient/chat/delete', {
+        method: 'POST', // Assuming you want to update the database via a POST request
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            chatId: chatId
+        })
+    })
 }

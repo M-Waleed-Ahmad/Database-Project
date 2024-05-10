@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const {createPool}= require('mysql2');
 const { v4: uuidv4 } = require('uuid');
+const e = require('express');
   const port = 80;
     
 function formatDate(dateString) {
@@ -68,11 +69,16 @@ app.get('/', (req, res) => {
         userid:' ',
         loggedin:false,
         username:' ',
+        id:' ',
         mail:' ',
     }
     res.cookie('UserData',UserData,{httpOnly:true});
-    res.render('Cover-Page');
+    res.render('Cover-Page',{UserData});
 });
+app.get('/logout',(req,res)=>{
+    res.clearCookie('UserData')
+    res.redirect('/');
+})
 
 app.get('/home', (req, res) => {
     res.render('Home-Page');
@@ -108,6 +114,11 @@ app.get('/doctors', async(req, res) => {
         console.error('Error executing query:', error);
     });
 });
+
+app.get('/ask', (req, res) => {
+    res.render('ask');
+}); 
+
 app.post('/doctors/consult', (req, res) => {
     console.log('Consult:',req.body);
     const sender=req.cookies.UserData.userid;
@@ -116,6 +127,10 @@ app.post('/doctors/consult', (req, res) => {
     const message=req.body.concern; 
     sql='INSERT INTO Messages (MessageID, ChatID, SenderID, ReceiverID, Message, Timestamp) VALUES (?,?,?,?,?,?)';
     const currentDate =  Date.now();
+    sql2=`UPDATE Patients
+    SET DoctorInCharge = '${reciever}'
+    WHERE PatientId ='${sender}'
+    `
     
     // Format the date and time string
     const formattedDate = formatDate(currentDate);
@@ -124,7 +139,14 @@ app.post('/doctors/consult', (req, res) => {
     executeQuery(sql,values)
     .then(suc=>{
         console.log('Message sent successfully');
-        res.sendStatus(200);
+        executeQuery(sql2)
+        .then(suc=>{
+            console.log('Doctor in charge updated');
+            res.sendStatus(200);
+        })
+        .catch(err=>{
+            console.log('ERR:',err);
+        })
     })
     .catch(err=>{
         console.error('Error executing query:',err);
@@ -140,8 +162,187 @@ app.get('/SignUp/doctor', (req, res) => {
   res.render('Doctor-Signup');    
 });
 
+app.get('/login', (req, res) => {
+    res.render('Login-Page');
+  });
+
+app.get('/admin', (req, res) => {
+    if (req.cookies.UserData.loggedin==true)
+        {
+          const {id,mail,password}=req.cookies.UserData;
+     
+          res.render('Admin');
+        }
+        else
+        {    
+            res.send('login timing expired');
+        } 
+  });
+  app.get('/admin:section', (req, res) => {
+    const section = req.params.section;
+    const {userid,mail}=req.cookies.UserData;
+    console.log('sectsdsion:', req.params);
+
+    if (section == '1') {
+        sql=`SELECT Users.FirstName, Users.LastName, Doctors.*
+        FROM Doctors
+        JOIN Users ON Doctors.DoctorId = Users.UserID
+        WHERE Doctors.AdminsApproval = 0;
+        `
+        executeQuery(sql)
+        .then(Doctors => {
+            res.json({ section, Doctors });
+            console.log('Doctors:', Doctors);
+        })
+        .catch(error => {
+            console.error('Error executing query:', error);
+        });
+    }
+    else if (section == '2') {
+        sql=`SELECT * FROM Doctors WHERE AdminsApproval = 1;`
+        executeQuery(sql)
+        .then(Doctors => {
+            res.json({ section, Doctors });
+            console.log('Doctors:', Doctors);
+        })
+        .catch(error => {
+            console.error('Error executing query:', error);
+        });
+    }
+    else if (section == '3') { 
+        console.log('Queries');
+        sql=`SELECT * from ContactUs;`
+        executeQuery(sql)
+        .then(Messages=>{
+            console.log('Chats',Messages);
+            res.json({ section,Messages}); // Render the template after data retrieval
+        })
+        .catch(error=>{
+            console.error('Error executing query:',error);
+        });
+    }
+    });
+app.post('/admin/add',(req,res)=>{
+    console.log('Add:',req.body);
+    userid=uuidv4();
+    const { firstName, lastName, email, password, gender, adminPhone, adminEmail } = req.body;
+    const user_query = 'INSERT INTO Users (UserID, PositionID, FirstName, LastName, Email, Password, Gender) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const values1 = [userid, 1, firstName, lastName, email, password, gender];
+    const admin_query = 'INSERT INTO Admins (AdminID, PhoneNo, Email) VALUES (?, ?, ?)';
+    const values2 = [userid, adminPhone, adminEmail];
+    executeQuery(user_query, values1)
+    .then(suc=>{
+        executeQuery(admin_query, values2)
+        .then(suc=>{
+            res.sendStatus(200);
+        })
+        .catch(err=>{
+            console.log('ERR:',err);
+        })
+    })
+    .catch(err=>{
+        console.log('ERR:',err);
+    })
+})
+app.post('/admin/approve',(req,res)=>{
+    console.log('Approve:',req.body);
+    const {DoctorId}=req.body;
+    const sql=`UPDATE Doctors
+    SET AdminsApproval = 1
+    WHERE DoctorId = '${DoctorId}';`
+    executeQuery(sql)
+    .then(suc=>{
+        console.log('Approved');
+        res.redirect('/admin');
+    })
+    .catch(err=>{
+        console.log('ERR:',err);
+    })
+})
 // ///////////////////////////////////////////////////////////////////////////////////
 // Patient Profile page urls
+app.get('/patient/update',(req,res)=>{
+    const {userid,mail}=req.cookies.UserData;
+    const sql = `SELECT Users.UserID, Users.PositionID, Users.FirstName, Users.LastName,
+    Users.Email,Patients.PatientId, Patients.Age, Patients.Weight, Patients.Height
+    ,Patients.Disease, Patients.Allergies, Patients.DoctorInCharge,
+    HealthRecords.EHRID, HealthRecords.MedicalHistory, HealthRecords.Treatment, HealthRecords.Status,
+    EmergencyInfo.EMID, EmergencyInfo.ContactName, EmergencyInfo.ContactPNO,
+    EmergencyInfo.ContactMail FROM Users LEFT JOIN Patients ON Users.UserID = Patients.PatientId 
+    LEFT JOIN HealthRecords ON Patients.PatientId = HealthRecords.PatientID LEFT JOIN EmergencyInfo ON Patients.PatientId = EmergencyInfo.PatientID
+    WHERE Users.Email = ?`
+
+    executeQuery(sql,mail)
+    .then(Patient => {
+        res.render('Patient-Update',{  Patient });
+        
+    console.log('Patient:', Patient);
+    })
+    .catch(error => {
+    console.error('Error executing query:', error);
+    });
+})
+app.post('/patient/update',(req,res)=>{
+    const { age,height,weight, Allergies, disease, medicalHistory, treatment, contactName, contactPhoneNumber, contactEmail } = req.body;
+
+    console.log("Height:", req.body);
+    console.log("Allergies:", Allergies);
+    console.log("Disease:", disease);
+    console.log("Medical History:", medicalHistory);
+    console.log("Treatment:", treatment);
+    console.log("Contact Name:", contactName);
+    console.log("Contact Phone Number:", contactPhoneNumber);
+    console.log("Contact Email:", contactEmail);
+    
+    dhist=`delete from HealthRecords where PatientID="${req.cookies.UserData.userid}"`;
+    dcon=`delete from EmergencyInfo where PatientID="${req.cookies.UserData.userid}"`;
+    upat=`UPDATE Patients
+    SET Age = '${age}',
+        Weight = '${weight}',
+        Height = '${height}',
+        Disease = '${disease}',
+        Allergies = '${Allergies}'
+        WHERE PatientId = '${req.cookies.UserData.userid}';
+    `
+    emer=`INSERT INTO EmergencyInfo (EMID, PatientID, ContactName, ContactPNO, ContactMail)
+    VALUES (?, ?, ?, ?, ?);
+    `
+    const med_query = 'INSERT INTO HealthRecords (EHRID, PatientID, MedicalHistory, Treatment, Status) VALUES (?, ?, ?, ?, ?)';
+
+    emerValu=[uuidv4(),req.cookies.UserData.userid,contactName,contactPhoneNumber,contactEmail];
+    executeQuery(upat)
+    .then(suc=>{
+        executeQuery(dhist)
+        .then(suc=>{
+            executeQuery(dcon)
+            .then(suc=>{
+                executeQuery(emer,emerValu)
+                .then(suc=>{
+                    for (let index = 0; index < medicalHistory.length; index++) {
+                        const values3 = [uuidv4(), req.cookies.UserData.userid, medicalHistory[index], treatment[index], 'past'];
+                        executeQuery(med_query,values3)
+                        .then(suc=>{
+                            res.sendStatus(200);
+                        })
+                        .catch(err=>{
+                            console.log('ERR:',err);
+                        })
+                    }
+                })
+                .catch(err=>{
+                    console.log('ERR:',err);
+                })
+            })
+        })
+        .catch(err=>{
+            console.log('Err:',err);
+        })
+    })
+    .catch(err=>{
+        console.log('ERR:',err);
+    })
+})
+
 
 app.get('/patient', (req, res) => {
     
@@ -188,6 +389,7 @@ app.get('/patient:section', (req, res) => {
             A.AppointmentID,
             A.CaseDescription,
             A.AppointmentDateTime,
+            A.DoctorID,
             UP.FirstName AS PatientFirstName,
             UP.LastName AS PatientLastName,
             UD.FirstName AS DoctorFirstName,
@@ -273,7 +475,11 @@ app.get('/patient:section', (req, res) => {
     }
     else if (section == '5') {
         console.log('Support Community');
-        sql=`Select * from Questions;`
+        sql=`
+        SELECT Users.FirstName, Users.LastName, Questions.question_statement,Questions.qid
+        FROM Questions
+        JOIN Users ON Questions.patientid = Users.UserID;
+        `
         executeQuery(sql)
         .then(questions=>{
             console.log("Questions:",questions);
@@ -327,6 +533,33 @@ app.post('/patient/chat/send',(req,res)=>{
     console.log('values',values);
  });
 
+app.post('/patient/chat/delete',(req,res)=>{
+    console.log('POk:',req.body);
+    const {chatId}=req.body;
+    const sql=`Delete from Messages where ChatID='${chatId}'`;
+    executeQuery(sql)
+    .then(suc=>{
+        console.log('Deleted');
+        res.redirect('/patient');
+    })
+    .catch(err=>{
+        console.log('ERR:',err);
+    })
+});
+app.post('/patient/prescription/delete',(req,res)=>{
+    console.log('POk:',req.body);
+    const {presId}=req.body;
+    const sql=`Delete from Prescriptions where PrescriptionID='${presId}'`;
+    executeQuery(sql)
+    .then(suc=>{
+        console.log('Deleted');
+        res.redirect('/patient');
+    })
+    .catch(err=>{
+        console.log('ERR:',err);
+    })
+});
+
 app.post('/patient/addPrescription',(req,res)=>{
     console.log('Hi',req.body);
     const {doctor,disease,medication,dosage,frequency,remaining}=req.body;
@@ -344,7 +577,11 @@ app.post('/patient/addPrescription',(req,res)=>{
 });
 app.get('/patient/qna',(req,res)=>{
     console.log('q',req.query.qid);
-    sql=`Select * from answers where qid='${req.query.qid}'`
+    sql=`
+    SELECT Users.FirstName, Users.LastName, Answers.answer_statement,Answers.patientid
+    FROM Answers
+    JOIN Users ON Answers.patientid = Users.UserID
+    WHERE Answers.qid = '${req.query.qid}';`
     executeQuery(sql)
     .then(answers=>{
         executeQuery(`Select question_statement from questions where qid='${req.query.qid}'`)
@@ -386,6 +623,35 @@ app.post('/patient/ask',(req,res)=>{
         console.log("ERR:",err);
     })
 })
+app.post('/patient/appointment/cancel',(req,res)=>{
+    a=req.body.appointmentId.appointmentId;
+    d=req.body.appointmentId.did;
+
+    console.log('Delete:',a,d);
+    s=`Delete from Appointments where AppointmentId="${a}"`;
+    executeQuery(s)
+    .then(suc=>{
+        console.log('Deleted');
+        const currentDate =  Date.now();
+        const formattedDate = formatDate(currentDate);
+        values=[uuidv4(),uuidv4(),req.cookies.UserData.userid,d,formatDate]
+        sq=`INSERT INTO Messages (MessageID, ChatID, SenderID, ReceiverID, Message, Timestamp) VALUES (?,?,?,?,?,?)`
+        executeQuery(sq,values)
+        .then(suc=>{
+            console.log("Message Send");
+        })
+        .catch(err=>{
+            console.log('ERR',err);
+        })
+        res.redirect('/patient');
+    })
+    .catch(err=>{
+        console.log('ERR:',err);
+    })
+
+})
+
+
 
 // Doctor APis
 app.get('/doctor', (req, res) => {
@@ -573,9 +839,7 @@ app.post('/doctor/appointment/delete',(req,res)=>{
         console.log('ERR:',err);
     })
 })
-app.get('/login', (req, res) => {
-  res.render('Login-Page');
-});
+
 // Contact us form submit krne k lie
 app.post('/contact',(req,res)=>{
         cid=uuidv4();
@@ -641,13 +905,19 @@ app.post('/Signup', (req, res) => {
   });
 app.post('/signup/patient', (req, res) => {
     userid = uuidv4();
+    console.log('asd',form_data);
     const { firstname, lastname, email, password, gender } = form_data;
-    const { age, weight, height, disease, Allergies, medicalHistory, treatment } = req.body;
+    const { age, weight, height, disease, Allergies, medicalHistory, treatment, contactName, contactPhoneNumber, contactEmail  } = req.body;
     const user_query = 'INSERT INTO Users (UserID, PositionID, FirstName, LastName, Email, Password, Gender) VALUES (?, ?, ?, ?, ?, ?, ?)';
     const values1 = [userid, 3, firstname, lastname, email, password, gender];
     const patient_query = 'INSERT INTO Patients (PatientID, Age, Weight, Height, Disease, Allergies) VALUES (?, ?, ?, ?, ?, ?)';
     const values2 = [userid, age, weight, height, disease, Allergies];
     const med_query = 'INSERT INTO HealthRecords (EHRID, PatientID, MedicalHistory, Treatment, Status) VALUES (?, ?, ?, ?, ?)';
+   
+    emer=`INSERT INTO EmergencyInfo (EMID, PatientID, ContactName, ContactPNO, ContactMail)
+    VALUES (?, ?, ?, ?, ?);
+    `
+    emerValu=[uuidv4(),userid,contactName,contactPhoneNumber,contactEmail];
 
     pool.query(user_query, values1, (err, SUC) => {
         if (err) {
@@ -666,6 +936,12 @@ app.post('/signup/patient', (req, res) => {
                             if (err) {
                                 console.log('Error:', err);
                             } else {
+                                executeQuery(emer,emerValu)
+                                .then(suc=>{
+                                    console.log('Ss');
+                                    res.sendStatus(200);
+                                    
+                                })
                                 console.log('Health record inserted successfully');
                             }
                         });
@@ -677,7 +953,6 @@ app.post('/signup/patient', (req, res) => {
 
 
 
-    res.sendStatus(200);
 });
 
 app.post('/signup/doctor',(req,res)=>{
@@ -687,8 +962,8 @@ app.post('/signup/doctor',(req,res)=>{
     const { LicenseNo,Experience,Qualification, institution, languages,Specialization} = req.body;
     const user_query='INSERT INTO Users (UserID, PositionID, FirstName, LastName, Email, Password, Gender)VALUES (?,?,?,?,?,?,?)';
     const values1=[userid,2,firstname,lastname,email,password,gender];
-    const doctor_query='INSERT INTO Doctors (DoctorID, Specialization, Qualification, LicenseNo,Institute,Experience,Language)VALUES(?,?,?,?,?,?,?)';    
-    const values2=[userid,Specialization,Qualification,LicenseNo,institution, Experience, languages];
+    const doctor_query='INSERT INTO Doctors (DoctorID, Specialization, Qualification, LicenseNo,Institute,Experience,Language,AdminsApproval)VALUES(?,?,?,?,?,?,?,?)';    
+    const values2=[userid,Specialization,Qualification,LicenseNo,institution, Experience, languages,0];
     pool.query(user_query,values1,(err,SUC)=>{
         if (err) {
             console.log('Error:',err);
@@ -735,15 +1010,19 @@ app.post('/login',(req,res)=>{
                     userid:id,
                     loggedin:true,
                     username:username,
+                    id:positionid,
                     mail:email,
                 }
                 res.cookie('UserData', UserData, { httpOnly: true });
-                if (positionid===3) {
-                console.log('Login s'); 
-                    res.redirect('/patient');
+                if (positionid=='3') {
+                    
+                     res.redirect('/patient');
                 } 
-                else {
+                else if (positionid=='2'){
                     res.redirect('/doctor');
+                }
+                else{
+                    res.redirect('/admin');
                 }
                         
             }
