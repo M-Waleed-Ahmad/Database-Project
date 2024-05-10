@@ -5,7 +5,8 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #80b8d8;
+    background-color: #287d9b; /* Adjusted background color */
+    background-image: linear-gradient(to right, #287d9b, #3EABE1); /* Gradient background */
     margin: 0;
     padding: 0;
 }
@@ -13,7 +14,8 @@ body {
 .container {
     max-width: 400px;
     margin: 100px auto;
-    background-color: #fff;
+    background-color: #b9d6eb; 
+    background-image: linear-gradient(to right, #b9d6eb, #a4d5ee); /* Gradient background */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
@@ -50,7 +52,7 @@ input[type="password"] {
 button[type="submit"] {
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #287d9b;
     border: none;
     border-radius: 5px;
     color: #fff;
@@ -70,24 +72,4 @@ p {
 a {
     color: #007bff;
 }
-
-
-/* Footer Stylings */
-footer{
-    background: black;
-    display:block;
-    color: white;
-    padding: 9px 20px;
-}
-.center{
-    text-align: center;
-}
-.links{
-    display: flex;
-    margin: 1%;
-    justify-content: center;
-}
-h1{
-    text-align: center;
-}
-
+ 

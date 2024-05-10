@@ -2,7 +2,11 @@
     margin: 0%;
     padding: 0%;
 }
+body{
+    background-color: #b9d6eb; 
+    background-image: linear-gradient(to right, #b9d6eb, #3EABE1); /* Gradient background */
 
+}
 /* Section No 1 Css Stylings */
 .section1{
     height:500px;
@@ -42,7 +46,7 @@
 
 .slide-content p {
     margin: 0;
-    color: rgb(0, 0, 0) ;
+    color: #002c41;
     font-size: xx-large;
     background-color: white;
     border: 2px solid transparent;
@@ -82,7 +86,8 @@ h1{
 
     margin: 2px 38px;
     border-radius: 28px;
-    background: WHITE;
+    background-color: #b9d6eb; 
+    background-image: linear-gradient(to right, #b9d6eb, #a0bbc9); /* Gradient background */
     margin-bottom: 20px;
   
 }
@@ -101,7 +106,10 @@ h1{
     margin: 9% 0%;
     width: 2%;
  }
+h1{
+    color: #002c41;
 
+}
  .btn1 button {
     height: 100%;
     width: 100%;
@@ -154,6 +162,10 @@ h1{
     margin: 2%;
     border: 2px solid transparent;
     border-radius: 16%;
+}
+.clients img{
+  
+    border-radius: 50%;
 }
 .clients:hover{
     cursor: pointer;

@@ -43,9 +43,14 @@
     
         switch (section) {
             case '1':
-            for (let int = 2; int < 5; int++) {
+            for (let int = 2; int <= 6; int++) {
+                if (int==1) {
+                    continue;   
+                    }
                 document.getElementById(`div${int}`).style.display = 'none';
             }
+            console.log('Patients',data.Patient);
+            document.getElementById(`div5`).style.display = 'none';
             sectionElement.style.display = 'block';
             sectionElement.innerHTML=`
                 <div id="div1" class="div1">
@@ -62,25 +67,32 @@
                             <p><strong>Blood Type:</strong> O+</p>
                             <p><strong>Allergies:</strong>${data.Patient[0].Allergies} </p>
                             <p><strong>Medical Conditions:</strong>${data.Patient[0].Disease}</p>
-                            <p><strong>Emergency Contact:</strong> ${data.Patient[0].Contactname}</p>
+                            <p><strong>Emergency Contact:</strong> ${data.Patient[0].ContactName}</p>
                         </div>
                     </div>
-            
                         <!-- Current and Past Health Records (On the Right Side) -->
                     <div id="rec" class="sect-2 records" >
-                        <br>
+                    <div style="display:flex; justify-content:space-between;">
+                        <h2 style="text-align:center;">Health Records</h2>
+                        <a href="/patient/update">
+                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#146E90">
+                                <path d="M14 0a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zM5.904 10.803 10 6.707v2.768a.5.5 0 0 0 1 0V5.5a.5.5 0 0 0-.5-.5H6.525a.5.5 0 1 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 .707.707"/>
+                            </svg>
+                        </a>    
+                    </div>
                     </div>
                 </div>
-            </div>        
+            </div>    
+                
             `;
             const sec = document.getElementById(`rec`);
             n=data.Patient.length;
             for (let int = 0; int < n; int++) {
                 sec.innerHTML += `
                 <p>
-                    <strong>Medical History:</strong>  ${data.Patient[int].FirstName}
-                    <strong>Treatment:</strong>  ${data.Patient[int].FirstName}
-                    <strong>Status:</strong>  ${data.Patient[int].FirstName}
+                    <strong>Medical History:</strong>  ${data.Patient[int].MedicalHistory}
+                    <strong>Treatment:</strong>  ${data.Patient[int].Treatment}
+                    <strong>Status:</strong>  ${data.Patient[int].Status}
                 </p>           
             `;
             }
@@ -89,7 +101,7 @@
             break;
             case '2':
                 sectionElement.style.display = 'block';
-                for (let int = 1; int <= 5; int++) {
+                for (let int = 1; int <= 6; int++) {
                     if (int==2) {
                     continue;   
                     }
@@ -98,7 +110,6 @@
                 }
 
                 sectionElement.innerHTML=`
-                <button class="btn">Create Appointments</button>
     
                 <div class="appoint">
                         <div class="Appointments-1">
@@ -115,9 +126,9 @@
                 console.log(n);
                 for (let int = 0; int < n; int++) {
                     appointments1Section.innerHTML += `
-                    <div class="doc" id="doc${int}" onclick="displayData('doc${int}')">
+                    <div apid="${data.Appointments[int].AppointmentID}"class="doc" id="doc${int}" onclick="displayData('doc${int}')">
                         <p><strong>Patient Name:</strong> ${data.Appointments[int].PatientFirstName}</p>
-                        <p><strong>Doctor Name:</strong> ${data.Appointments[int].DoctorLastName}</p>
+                        <p  apid="${data.Appointments[int].DoctorID}"><strong>Doctor Name:</strong> ${data.Appointments[int].DoctorFirstName}</p>
                         <p><strong>Case:</strong> ${data.Appointments[int].CaseDescription}</p>
                         <p><strong>Date:</strong> ${data.Appointments[int].AppointmentDateTime}</p>
                     </div>
@@ -127,7 +138,7 @@
             break;
             case '3':
             sectionElement.style.display = 'block';
-                for (let int = 1; int <= 5; int++) {
+                for (let int = 1; int <= 6; int++) {
                     if (int==3) {
                     continue;   
                     }
@@ -148,7 +159,9 @@
                         </div>
                     </div>
                     <div id="conversation" >
-                        <h2>Conversation</h2>
+                        <div class='bye'>
+                            <h2>Conversation</h2>
+                        </div>
                             <div id="chat-container" class="messages">
                                 <!-- Messages will be loaded here dynamically -->
                             </div>
@@ -163,7 +176,9 @@
                     chat.innerHTML+=`
                         <button class="bt" onclick="fetchChat({ ChatID: '${data.Messages[index].ChatID}', lastName: '${data.Messages[index].OtherPersonLastName}' })">
                             <div class="chat-box">
-                                <p>Doctor: ${data.Messages[index].OtherPersonFirstName+" "+data.Messages[index].OtherPersonLastName}</p>
+                                <p style="display:flex;">Doctor: ${data.Messages[index].OtherPersonFirstName+" "+data.Messages[index].OtherPersonLastName}
+                                </p>
+                              
                             </div>
                         </button>
                         `                    
@@ -173,16 +188,14 @@
                 break;
             case '4':
             sectionElement.style.display = 'block';
-                for (let int = 1; int <= 5; int++) {
+                for (let int = 1; int <= 6; int++) {
                     if (int==4) {
                     continue;   
                     }
                     document.getElementById(`div${int}`).style.display = 'none';
                 }
                 sectionElement.innerHTML=`
-                <header>
-                    <h1>Prescriptions</h1>
-                </header>
+              
                 <main>
                     <div class="prescription-list">
                         <h2>Your Prescriptions</h2>
@@ -221,11 +234,17 @@
                     div.setAttribute('id', `prescription${index+1}`);
                     div.classList.add('prescription');
                     div.innerHTML=`
+
                     <p><strong>Disease:</strong>${data.Prescriptions[index].Disease}</p>
                     <p><strong>Treatment:</strong>${data.Prescriptions[index].Treatments}</p>
                     <p><strong>Dosage:</strong>${data.Prescriptions[index].Dosage}</p>
                     <p><strong>Frequency:</strong>${data.Prescriptions[index].frequency}</p>
                     <p><strong>Remaining Quantity:</strong> ${data.Prescriptions[index].RemainingQuantity}</p>
+                    <button onclick=PresDel("${data.Prescriptions[index].PrescriptionID}")>
+                    <svg  class="cross" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                    </button>
                     `
                     myPrescriptions.appendChild(div);
                 }
@@ -281,7 +300,7 @@
             break;
             case '5':
             sectionElement.style.display = 'block';
-                for (let int = 1; int <= 5; int++) {
+                for (let int = 1; int <= 6; int++) {
                     if (int==5) {
                     continue;   
                     }
@@ -317,6 +336,8 @@
                     })                   
                 }
             break;
+            
+             
             default:
                 break;
         }
@@ -343,46 +364,21 @@
     window.addEventListener('load', initializePage);
 
 
-        function toggleLine(element) {
-            const line = document.querySelector('.line');
-            const navItems = document.querySelectorAll('.item');
-            
-            const itemWidth = element.offsetWidth;
-            const itemOffsetLeft = element.offsetLeft;
-            const containerOffsetLeft = document.querySelector('.innernav2').offsetLeft; 
-            line.style.width = itemWidth + 'px';
-            line.style.transform = 'translateX(' + (itemOffsetLeft - containerOffsetLeft) + 'px)'; 
-            
-            navItems.forEach(item => {
-                item.classList.remove('active');
-            });
-
-            element.classList.add('active');
-        }
-
-        const appointmentsSection = document.querySelector('.appointments-2');
-        console.log(appointmentsSection);
-        window.addEventListener('scroll', function() {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const appointmentsRect = appointmentsSection.getBoundingClientRect();
-            const originalTop = 20; // Original top position of appointments-2 section
-
-            if (scrollTop > originalTop) {
-                // Scrolling down
-                appointmentsSection.style.position = 'fixed';
-                appointmentsSection.style.top = '10%'; // Adjust as needed
-            } else {
-                // Scrolling up or at the top
-                appointmentsSection.style.position = 'sticky';
-            }
-        });
+     
+        let apids;  
 
         function displayData(docId) {
         const docElement = document.getElementById(docId);
 
         const name = docElement.querySelector('p:nth-child(1)').innerText;
         const caseInfo = docElement.querySelector('p:nth-child(2)').innerText;
+        const did = docElement.querySelector('p:nth-child(2)').getAttribute('apid');
+        
         const date = docElement.querySelector('p:nth-child(3)').innerText;
+        const appointmentId = docElement.getAttribute('apid');
+        apids={appointmentId,did};
+        console.log('APIDS',apids   );
+
 
         // Display the data in the appointments-2 section
         const appointments2Section = document.querySelector('.appointments-2');
@@ -394,14 +390,35 @@
         <p><strong>Doctor:</strong> Shaka</p>
         <p><strong>Location:</strong> Shaka</p>
         <p><strong>Time:</strong> Shaka</p>
-        <div style="margin-left:40px;">
-            <button class="btn1" ">Cancel</button>
-            <button class="btn1" ">Confirm</button>
-            <button class="btn1" ">Text</button>
-            <button class="btn1" ">Set Reminder</button>        
+        <div style="margin-left:250px;">
+            <button class="btn1" onclick="apOp('a')">Cancel</button>
         </div>`;
 
     }
+    
+function apOp(para){
+  if (para=='a') {
+    console.log("HI")
+    fetch('/patient/appointment/cancel', {
+        method: 'POST', // Assuming you want to update the database via a POST request
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            appointmentId: apids
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            // Handle successful response
+            console.log('Appointment cancelled successfully');
+        } else {
+            // Handle error response
+            console.error('Failed to cancel appointment');
+        }
+    }) 
+  }
+}
 
     // This is part is for chats only
     function fetchChat(lname){
@@ -455,6 +472,13 @@
     if (adjacentDiv) {
         adjacentDiv.remove();
     }
+        document.querySelector('.bye').innerHTML+=` 
+        <button onclick=chatDel("${chatId}")>
+        <svg  class="cross" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+        </svg>
+        </button>
+      `        // Clear previous messages
 
         messagesDiv.insertAdjacentHTML('afterend',sendbox);        // Clear previous messages
         messagesDiv.innerHTML = '';
@@ -535,6 +559,29 @@ function sendMessage() {
     });
     } 
 
+    function chatDel(chatId){
+        fetch('/patient/chat/delete', {
+            method: 'POST', // Assuming you want to update the database via a POST request
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                chatId: chatId
+            })
+        })
+    }
+
+    function PresDel(presId){
+        fetch('/patient/prescription/delete', {
+            method: 'POST', // Assuming you want to update the database via a POST request
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                presId: presId
+            })
+        })
+    }
 function formatDate(dateString) {
 // Parse the input date string
 const date = new Date(dateString);

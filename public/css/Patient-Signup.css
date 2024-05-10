@@ -5,20 +5,21 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #B3E5FC;
-    margin: 0;
+
+    background-color: #b9d6eb; 
+    background-image: linear-gradient(to right, #b9d6eb, #3EABE1); /* Gradient background */    margin: 0;
     padding: 0;
 }
 
 .container {
     max-width: 500px;
     margin: 100px auto;
-    background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-    background-color: #E0F2FE;
-}
+    background-color: #b9d6eb; 
+    background-image: linear-gradient(to right, #b9d6eb, #a4d5ee); /* Gradient background */
+ }
 
 h1 {
     text-align: center;
@@ -52,7 +53,7 @@ input[type="number"] {
 button[type="submit"] {
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #287d9b;
     border: none;
     border-radius: 5px;
     color: #fff;

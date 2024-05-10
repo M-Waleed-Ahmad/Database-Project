@@ -5,7 +5,8 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #80b8d8;
+    background-color: #287d9b; /* Adjusted background color */
+    background-image: linear-gradient(to right, #287d9b, #3EABE1); /* Gradient background */
     margin: 0;
     padding: 0;
 }
@@ -13,7 +14,8 @@ body {
 .container {
     max-width: 500px;
     margin: 100px auto;
-    background-color: #fff;
+    background-color: #b9d6eb; 
+    background-image: linear-gradient(to right, #b9d6eb, #a4d5ee); /* Gradient background */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
@@ -61,7 +63,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: #287d9b;
 }
 
 p {

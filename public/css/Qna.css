@@ -1,11 +1,14 @@
 body {
     margin: 0;
     padding: 0;
+    background-color: #b9d6eb; 
+    background-image: linear-gradient(to right, #b9d6eb, #3EABE1); /* Gradient background */
+
 }
 
 header {
-    background-color: #007bff;
-    color: #fff;
+    background-image: linear-gradient(to right, #3EABE1, #146E90); /* Gradient background */
+    border-bottom: 2px solid #146E90; /* Add border for contrast */    color: #fff;
     padding: 20px;
     text-align: center;
     font-family: 'Bree Serif', serif;
@@ -18,6 +21,7 @@ main {
 .question {
     margin-bottom: 20px;
     text-align: center;
+    
 }
 
 .question h2 {
@@ -26,8 +30,9 @@ main {
 }
 
 .answer {
-    background-color: #f9f9f9;
-    padding: 20px;
+    background-color: #b9d6eb; 
+    
+    background-image: linear-gradient(to right, #b9d6eb, #a4d5ee); /* Gradient background */    padding: 20px;
     margin: 20px auto;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -35,9 +40,14 @@ main {
 }
 .answers h2,.ask-question h2{
     text-align: center;
+    color: #002c41;
+
 }
 
 .ask-question textarea {
+    background-color: #b9d6eb; 
+    color: #002c41;
+    background-image: linear-gradient(to right, #b9d6eb, #a4d5ee); /* Gradient background */
     width: 100%;
     height: 150px;
     padding: 10px;
